@@ -958,56 +958,46 @@ export class AgentCoreStack extends cdk.Stack {
       value: `
 After deploying this stack:
 
-1. Set up AgentCore Payments resources (one-time):
-   cd agentcore-payments-beta/quickstart
-   cp .env.sample .env  # Fill in Coinbase CDP keys
-   bash setup_model.sh   # Install boto3 service models
-   bash setup_manager.sh # Creates credential provider, manager, connector
-   # Save the output: MANAGER_ARN, CONNECTOR_ID
+1. Set up AgentCore Payments resources (one-time) using boto3:
+   See: https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html
 
-2. Create a Payment Instrument and Session (app backend):
-   cd agentcore-payments-beta/scripts
-   cp .env.sample .env  # Fill in MANAGER_ARN, CONNECTOR_ID, role ARNs
-   bash e2e-test.sh     # Creates instrument + session
-   # Save: PAYMENT_INSTRUMENT_ID, PAYMENT_SESSION_ID
+   a. Create a PaymentCredentialProvider with your Coinbase CDP keys
+   b. Create a PaymentManager (use ResourceRetrievalRoleArn from this stack output)
+   c. Create a PaymentConnector linking the manager to the credential provider
+   d. Create a PaymentInstrument (wallet) and fund it with USDC
+   e. Create a PaymentSession with a maxSpendAmount budget
 
-3. Deploy the seller infrastructure first (if not already deployed):
+2. Deploy the seller infrastructure first (if not already deployed):
    cd seller-infrastructure && npm install && cdk deploy
    # Note the CloudFront URL from the output
 
-4. Configure the payer agent environment:
+3. Configure the payer agent environment:
    cd payer-agent && cp .env.example .env
    # Fill in: MANAGER_ARN, PAYMENT_SESSION_ID, PAYMENT_INSTRUMENT_ID,
-   #          PROCESS_PAYMENT_ROLE_ARN, USER_ID, SELLER_API_URL
+   #          PROCESS_PAYMENT_ROLE_ARN (see ProcessPaymentRoleArn output below),
+   #          USER_ID, SELLER_API_URL
 
-5. Create AgentCore Runtime via CLI or console:
+4. Create AgentCore Runtime via CLI or console:
    - Use the agent code from payer-agent/
    - Assign the runtime role: ${agentRuntimeRole.roleArn}
    - See payer-agent/agentcore_config.yaml for configuration
 
-6. Create AgentCore Gateway with MCP tool server:
+5. Create AgentCore Gateway with MCP tool server:
    - Point to the Runtime endpoint
    - Assign the gateway role: ${this.gatewayRole.roleArn}
    - Configure IAM SigV4 authentication
-   - Configure rate limiting:
-     * Requests per second: ${this.rateLimitConfig.requestsPerSecond}
-     * Burst capacity: ${this.rateLimitConfig.burstCapacity}
-     * Limit by: ${this.rateLimitConfig.limitBy}
 
-7. Configure Gateway Target for MCP tools:
+6. Configure Gateway Target for MCP tools:
    - Target name: x402-content-tools
    - Target type: OPENAPI
    - OpenAPI spec S3 URI: s3://${this.openApiSpecAsset.s3BucketName}/${this.openApiSpecAsset.s3ObjectKey}
    - Target URL: ${sellerCloudFrontUrl}
    - Assign target role: ${this.gatewayTargetRole.roleArn}
 
-8. Subscribe to rate limit alarms (optional):
-   aws sns subscribe --topic-arn ${this.rateLimitAlarmTopic.topicArn} --protocol email --notification-endpoint your-email@example.com
-
-AgentCore Payments Roles:
-- ProcessPaymentRole: ${processPaymentRole.roleArn}
-- ManagementRole: ${managementRole.roleArn}
-- ResourceRetrievalRole: ${resourceRetrievalRole.roleArn}
+AgentCore Payments Roles (from this stack):
+- ProcessPaymentRoleArn: ${processPaymentRole.roleArn}
+- ManagementRoleArn: ${managementRole.roleArn}
+- ResourceRetrievalRoleArn: ${resourceRetrievalRole.roleArn}
 
 See: https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html
       `,

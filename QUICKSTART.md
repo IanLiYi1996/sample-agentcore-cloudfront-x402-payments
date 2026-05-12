@@ -14,7 +14,6 @@ Get the x402 payment demo running in under 30 minutes.
 
 Also required:
 - AWS account with Bedrock AgentCore access
-- AgentCore Payments setup completed (see `agentcore-payments-beta/quickstart/`)
 - [Coinbase Developer Platform](https://portal.cdp.coinbase.com/) API keys (for AgentCore Payments credential provider setup)
 
 ## Full Deployment
@@ -53,32 +52,74 @@ npx cdk deploy
 
 ### Step 4: Set Up AgentCore Payments (10 min)
 
-This creates the payment infrastructure (credential provider, manager, connector):
+Deploy the payer infrastructure first — it creates the required IAM roles:
 
 ```bash
-cd agentcore-payments-beta/quickstart
-cp .env.sample .env
-# Fill in: COINBASE_API_KEY_ID, COINBASE_API_KEY_SECRET, COINBASE_WALLET_SECRET
-
-bash setup_roles.sh       # Creates 4 IAM roles
-bash setup_model.sh       # Installs boto3 service models (needed until GA)
-bash setup_manager.sh     # Creates credential provider, manager, connector
+cd payer-infrastructure
+npm install
+npx cdk bootstrap  # first time only
+npx cdk deploy --all
 ```
 
-Save the output values — you'll need `MANAGER_ARN` and `CONNECTOR_ID`.
+Then create the AgentCore Payments resources using boto3 (AgentCore Payments is included in the standard AWS SDK):
 
-Then create an instrument and session:
+```python
+import boto3
 
-```bash
-cd ../scripts
-cp .env.sample .env
-# Fill in: MANAGER_ARN, CONNECTOR_ID, role ARNs from setup_roles.sh output
-bash e2e-test.sh
+cp_client = boto3.client("bedrock-agentcore-control", region_name="us-west-2")
+dp_client = boto3.client("bedrock-agentcore", region_name="us-west-2")
+
+# 1. Create credential provider (stores your Coinbase CDP keys in AgentCore Identity)
+provider = cp_client.create_payment_credential_provider(
+    name="MyPaymentsProvider",
+    credentialProviderVendor="CoinbaseCDP",
+    providerConfigurationInput={"coinbaseCdpConfiguration": {
+        "apiKeyId": "<CDP_API_KEY_ID>",
+        "apiKeySecret": "<CDP_API_KEY_SECRET>",
+        "walletSecret": "<CDP_WALLET_SECRET>",
+    }},
+)
+
+# 2. Create payment manager
+manager = cp_client.create_payment_manager(
+    name="MyPaymentsManager",
+    authorizerType="AWS_IAM",
+    roleArn="<ResourceRetrievalRoleArn>",   # from CDK output
+)
+
+# 3. Create connector
+connector = cp_client.create_payment_connector(
+    paymentManagerId=manager["paymentManagerId"],
+    name="MyPaymentsConnector",
+    type="CoinbaseCDP",
+    credentialProviderConfigurations=[{
+        "coinbaseCDP": {"credentialProviderArn": provider["credentialProviderArn"]}
+    }],
+)
+
+# 4. Create instrument (wallet) — fund it with USDC at https://faucet.circle.com/
+instrument = dp_client.create_payment_instrument(
+    paymentManagerArn=manager["paymentManagerArn"],
+    paymentConnectorId=connector["paymentConnectorId"],
+    userId="test-user-12345",
+    paymentInstrumentType="CRYPTO_WALLET",
+    paymentInstrumentDetails={"cryptoWallet": {"network": "ETHEREUM"}},
+)
+
+# 5. Create session with spending limit
+session = dp_client.create_payment_session(
+    paymentManagerArn=manager["paymentManagerArn"],
+    userId="test-user-12345",
+    expiryDuration=480,
+    limits={"maxSpendAmount": {"value": "1.0", "currency": "USD"}},
+)
+
+print("MANAGER_ARN =", manager["paymentManagerArn"])
+print("PAYMENT_INSTRUMENT_ID =", instrument["paymentInstrument"]["paymentInstrumentId"])
+print("PAYMENT_SESSION_ID =", session["paymentSession"]["paymentSessionId"])
 ```
 
-Save `PAYMENT_INSTRUMENT_ID` and `PAYMENT_SESSION_ID` from the output.
-
-Fund the wallet with testnet USDC at https://faucet.circle.com/ (Base Sepolia).
+See the [AgentCore Payments documentation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html) for full details.
 
 ### Step 5: Configure Payer Agent
 
@@ -92,21 +133,12 @@ Fill in the `.env` file:
 MANAGER_ARN=<from step 4>
 PAYMENT_SESSION_ID=<from step 4>
 PAYMENT_INSTRUMENT_ID=<from step 4>
-PROCESS_PAYMENT_ROLE_ARN=<from setup_roles.sh output>
+PROCESS_PAYMENT_ROLE_ARN=<from CDK output: ProcessPaymentRoleArn>
 USER_ID=test-user-12345
 SELLER_API_URL=<CloudFront URL from step 3>
 ```
 
-### Step 6: Deploy Payer Infrastructure (10 min)
-
-```bash
-cd payer-infrastructure
-npm install
-npx cdk bootstrap  # first time only
-npx cdk deploy --all
-```
-
-### Step 7: Deploy Agent
+### Step 6: Deploy Agent
 
 ```bash
 cd payer-agent
@@ -116,7 +148,7 @@ pip install -e ".[dev]"
 python scripts/deploy_to_agentcore.py
 ```
 
-### Step 8: Test
+### Step 7: Test
 
 ```bash
 cd payer-agent
@@ -132,7 +164,7 @@ python scripts/invoke_gateway.py "Get me the premium article"
 pytest tests/ -v
 ```
 
-### Step 9: Web UI (Optional)
+### Step 8: Web UI (Optional)
 
 Start the backend API server and frontend in separate terminals:
 ```bash
@@ -187,5 +219,5 @@ Lambda@Edge requires `us-east-1`. This is hardcoded in the CDK stack — no conf
 ## References
 
 - [README.md](README.md) - Full architecture
-- [agentcore-payments-beta/docs/getting-started.md](agentcore-payments-beta/docs/getting-started.md) - AgentCore Payments guide
+- [AgentCore Payments documentation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html)
 - [x402 Protocol](https://github.com/coinbase/x402/tree/main/specs)

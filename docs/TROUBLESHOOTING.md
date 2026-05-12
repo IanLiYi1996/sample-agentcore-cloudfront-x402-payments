@@ -166,10 +166,9 @@ cd payer-infrastructure
 npx cdk deploy
 ```
 
-2. Or create roles manually:
+2. Or create roles manually by deploying the CDK stack:
 ```bash
-cd agentcore-payments-beta/quickstart
-bash setup_roles.sh
+cd payer-infrastructure && npx cdk deploy
 ```
 
 ### Rate limiting errors
@@ -880,7 +879,7 @@ aws bedrock list-foundation-models --query "modelSummaries[?contains(modelId, 'c
 If you're still stuck:
 
 1. Check the [x402 GitHub Issues](https://github.com/coinbase/x402/issues)
-2. Review [AgentCore Payments docs](agentcore-payments-beta/docs/getting-started.md)
+2. Review the [AgentCore Payments documentation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html)
 3. Consult [Strands Agents Docs](https://strandsagents.com/)
 4. Check [Bedrock AgentCore Docs](https://docs.aws.amazon.com/bedrock-agentcore/)
 

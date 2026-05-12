@@ -161,7 +161,6 @@ sample-agentcore-cloudfront-x402-payments/
 │       ├── web-ui-stack.ts   # CloudFront + S3 + API Gateway
 │       └── lambda/           # API proxy for AgentCore
 │
-├── agentcore-payments-beta/  # AgentCore Payments quickstart & reference
 ├── scripts/                  # Setup & verification scripts
 └── docs/                     # Documentation
 ```
@@ -231,8 +230,7 @@ MCP tools (discovered via Gateway at `/mcp/tools`):
 ## Prerequisites
 
 - AWS Account with Bedrock AgentCore access
-- AgentCore Payments setup completed (see `agentcore-payments-beta/quickstart/`)
-- [Coinbase Developer Platform](https://portal.cdp.coinbase.com/) API keys (for credential provider setup)
+- [Coinbase Developer Platform](https://portal.cdp.coinbase.com/) API keys (for AgentCore Payments credential provider setup)
 - Node.js 18+, Python 3.10+
 - AWS CDK CLI
 - Docker (for agent deployment to AgentCore)
@@ -271,12 +269,13 @@ npx cdk deploy
 
 ### 4. Set up AgentCore Payments
 
+Deploy payer infrastructure (creates IAM roles), then create resources via boto3:
+
 ```bash
-cd agentcore-payments-beta/quickstart
-cp .env.sample .env
-# Fill in Coinbase CDP keys
-bash setup_roles.sh && bash setup_model.sh && bash setup_manager.sh
+cd payer-infrastructure && npm install && npx cdk bootstrap && npx cdk deploy --all
 ```
+
+See [QUICKSTART.md](QUICKSTART.md) for the full boto3 setup script (credential provider → manager → connector → instrument → session).
 
 ### 5. Deploy payer infrastructure
 

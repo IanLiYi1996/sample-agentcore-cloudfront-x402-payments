@@ -112,7 +112,7 @@ response = agent("Get me the premium article at /api/premium-article")
 
 - AWS CLI configured
 - CDK CLI (`npm install -g aws-cdk`)
-- AgentCore Payments setup completed (see `agentcore-payments-beta/quickstart/`)
+- [Coinbase Developer Platform](https://portal.cdp.coinbase.com/) API keys (for AgentCore Payments credential provider setup)
 
 ### Deploy Infrastructure
 
