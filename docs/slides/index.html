@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentCore Payments — 让 AI Agent 自己掏钱</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #111;
+      --muted: #6b7280;
+      --soft: #4b5563;
+      --accent: #ff6b35;
+      --accent-soft: #fed7aa;
+      --link: #2563eb;
+      --code-bg: #0d1117;
+      --code-fg: #e6edf3;
+      --green: #10b981;
+      --red: #ef4444;
+      --border: #e5e7eb;
+    }
+    .reveal {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--fg);
+      font-weight: 400;
+    }
+    .reveal .slides section {
+      text-align: left;
+      padding: 0 40px;
+    }
+    .reveal h1, .reveal h2, .reveal h3 { color: var(--fg); font-weight: 800; letter-spacing: -0.5px; text-transform: none; }
+    .reveal h1 { font-size: 2.4em; line-height: 1.1; margin-bottom: 0.4em; }
+    .reveal h2 { font-size: 1.6em; line-height: 1.15; margin-bottom: 0.5em; }
+    .reveal h3 { font-size: 1.1em; color: var(--soft); }
+    .reveal p, .reveal li { color: var(--soft); line-height: 1.5; font-size: 0.85em; }
+    .reveal strong { color: var(--fg); }
+    .reveal a { color: var(--link); }
+    .reveal pre { box-shadow: none; }
+    .reveal pre code {
+      font-size: 0.6em;
+      line-height: 1.5;
+      padding: 18px 24px;
+      border-radius: 10px;
+      background: var(--code-bg);
+      max-height: 480px;
+    }
+    .reveal code { font-family: "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; }
+    .reveal :not(pre) > code { background: #f3f4f6; color: var(--accent); padding: 1px 6px; border-radius: 3px; font-size: 0.85em; }
+
+    /* Title slide */
+    .title-slide { text-align: center !important; }
+    .title-slide .eyebrow {
+      font-size: 0.7em; color: var(--accent); font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px;
+    }
+    .title-slide h1 { font-size: 3em; margin-bottom: 0.3em; }
+    .title-slide .accent { color: var(--accent); }
+    .title-slide .sub { font-size: 1.1em; color: var(--soft); margin-bottom: 60px; }
+    .title-slide .meta { font-size: 0.7em; color: var(--muted); font-family: "SF Mono", Menlo, monospace; }
+
+    /* Section dividers */
+    .section-divider {
+      background: var(--fg);
+      color: white !important;
+      text-align: center !important;
+    }
+    .section-divider .num {
+      font-family: "SF Mono", Menlo, monospace;
+      color: var(--accent); font-size: 0.6em; margin-bottom: 20px;
+    }
+    .section-divider h1 { color: white !important; font-size: 2.5em; }
+    .section-divider .desc { color: #d1d5db !important; }
+
+    /* Two-column layout */
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .cols .label, .cols-3 .label {
+      font-size: 0.65em; color: var(--accent); letter-spacing: 1.5px;
+      text-transform: uppercase; font-weight: 700; margin-bottom: 10px;
+    }
+
+    /* Cards */
+    .card {
+      background: white; border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card .title { font-weight: 700; color: var(--fg); margin-bottom: 6px; font-size: 0.95em; }
+    .card .body { font-size: 0.75em; color: var(--soft); line-height: 1.45; }
+
+    /* Pill tags */
+    .pill {
+      display: inline-block; padding: 3px 10px; border-radius: 14px;
+      font-size: 0.55em; font-family: "SF Mono", Menlo, monospace;
+      font-weight: 600; letter-spacing: 0.5px;
+      background: var(--accent-soft); color: #92400e;
+      margin-right: 6px;
+    }
+    .pill.green { background: #d1fae5; color: #065f46; }
+    .pill.red { background: #fee2e2; color: #991b1b; }
+    .pill.blue { background: #dbeafe; color: #1e40af; }
+    .pill.gray { background: #e5e7eb; color: #374151; }
+
+    /* Step numbers */
+    .step-num {
+      display: inline-flex; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent); color: white; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85em; margin-right: 10px; vertical-align: middle;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+
+    /* Flow diagram boxes */
+    .flow {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 0.7em; line-height: 1.6; background: #f9fafb;
+      padding: 24px; border-radius: 8px; border: 1px solid var(--border);
+      white-space: pre; overflow: auto;
+    }
+    .flow .arrow { color: var(--accent); font-weight: bold; }
+    .flow .ok { color: var(--green); }
+    .flow .err { color: var(--red); }
+
+    /* Footer slide number */
+    .reveal .slide-number {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 0.5em; color: var(--muted);
+      background: transparent; right: 20px; bottom: 16px;
+    }
+
+    /* Keep utility */
+    .muted { color: var(--muted); }
+    .small { font-size: 0.7em; }
+    .center { text-align: center; }
+    .mono { font-family: "SF Mono", Menlo, monospace; }
+    .hl { background: linear-gradient(transparent 65%, var(--accent-soft) 65%); padding: 0 4px; }
+
+    /* Comparison table */
+    table.comp { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+    table.comp th, table.comp td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    table.comp th { color: var(--muted); font-weight: 600; font-size: 0.85em; letter-spacing: 0.5px; text-transform: uppercase; }
+    table.comp tr:last-child td { border-bottom: none; }
+    table.comp .ok { color: var(--green); font-weight: 700; }
+    table.comp .no { color: var(--red); }
+
+    /* Hero image full */
+    .full-img { width: 100%; border-radius: 12px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.2); }
+
+    /* Asset link */
+    .asset-link {
+      display: block; padding: 14px 20px; background: white;
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 10px; text-decoration: none !important;
+      transition: all 0.15s ease;
+    }
+    .asset-link:hover { border-color: var(--accent); transform: translateX(4px); }
+    .asset-link .name {
+      font-family: "SF Mono", Menlo, monospace; font-weight: 600;
+      color: var(--fg) !important; font-size: 0.9em;
+    }
+    .asset-link .desc { color: var(--muted) !important; font-size: 0.7em; margin-top: 2px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- =================================================================== -->
+<!-- SLIDE 1: Title -->
+<!-- =================================================================== -->
+<section class="title-slide" data-background-color="#fafafa">
+  <div class="eyebrow">AWS BEDROCK · AGENTCORE PAYMENTS</div>
+  <h1>让 AI Agent <span class="accent">自己掏钱</span></h1>
+  <div class="sub">x402 协议 · EIP-3009 · 链上微支付 · 一份完整可复现的 demo</div>
+  <div class="meta">2026-05 · Preview · Base Sepolia</div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 2: The problem -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>一个尴尬的场景</h2>
+  <div class="cols" style="margin-top: 30px;">
+    <div>
+      <p style="font-size: 1em; color: var(--fg); line-height: 1.6;">
+        你跟 AI 说：<br>
+        <strong>"帮我查一下这个月的市场分析报告。"</strong>
+      </p>
+      <p style="margin-top: 24px;">Agent 去搜索，找到一篇付费文章，<strong>$0.002</strong> 一次。</p>
+      <p style="color: var(--accent); font-weight: 700; font-size: 1.1em; margin-top: 24px;">但它没法买。</p>
+    </div>
+    <div>
+      <div class="card">
+        <div class="title">为什么不行？</div>
+        <div class="body">
+          <ul style="padding-left: 18px;">
+            <li>没法注册账号（每个供应商都要 KYC）</li>
+            <li>$0.002 的微支付，传统卡组织手续费比金额大</li>
+            <li>Agent 要在<strong>每次请求粒度</strong>付款，不是月结</li>
+            <li>供应方不想为 agent 单独搭账户体系</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="small muted center" style="margin-top: 36px;">
+    这是 AI Agent 经济迈不过去的一道坎
+  </p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 3: x402 -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>解法：复活一个 26 年前的 HTTP 状态码</h2>
+  <p class="small">HTTP 1999 年就保留了一个几乎没人用过的状态码：</p>
+  <div class="center" style="font-size: 3em; font-family: 'SF Mono', monospace; font-weight: 800; color: var(--accent); margin: 30px 0;">
+    402 Payment Required
+  </div>
+  <p>
+    Coinbase 2024 提出 <strong>x402 协议</strong>，把支付塞进 HTTP 本身：
+  </p>
+  <pre><code class="language-http" data-trim data-noescape>
+Agent:    GET /api/article
+Server:   <span style="color:#ff7b72">HTTP/1.1 402 Payment Required</span>
+          { accepts: [{ amount: "1000", payTo: "0xF72b...", asset: USDC }] }
+
+Agent:    (本地签一张 EIP-3009 授权单)
+
+Agent:    GET /api/article
+          <span style="color:#79c0ff">X-PAYMENT: &lt;base64 签名&gt;</span>
+Server:   <span style="color:#3fb950">HTTP/1.1 200 OK + 内容</span>
+          <span style="color:#79c0ff">X-PAYMENT-RESPONSE: &lt;tx hash&gt;</span></code></pre>
+  <p class="small muted">
+    三步握手。无账号、无 API key、每次请求当场结清。
+  </p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 4: EIP-3009 explained -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>关键拼图：EIP-3009</h2>
+  <p class="small">如果用普通 ERC20 transfer：payer 要自己付 gas + 等链上确认。Agent 跑不动。</p>
+  <h3 style="margin-top: 30px; color: var(--fg);">EIP-3009 的 transferWithAuthorization</h3>
+  <div class="cols">
+    <div>
+      <p>核心机制：</p>
+      <ul style="font-size: 0.75em;">
+        <li><strong>payer 只签名，不上链</strong></li>
+        <li>任何人拿着签名 → 调合约 → USDC 自动转账</li>
+        <li>谁调用谁付 gas（通常是 facilitator）</li>
+        <li>nonce + 时间窗防重放和过期</li>
+      </ul>
+      <p style="margin-top: 24px;">对 agent 意味着：</p>
+      <p><strong>付款像发 email 一样</strong>——签一张授权单，由 seller 兑付。</p>
+    </div>
+    <div>
+      <pre style="margin: 0;"><code class="language-solidity" data-trim data-noescape>
+function transferWithAuthorization(
+  address from,        // payer
+  address to,          // seller
+  uint256 value,
+  uint256 validAfter,
+  uint256 validBefore,
+  bytes32 nonce,
+  uint8 v, bytes32 r, bytes32 s
+) external</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 5: But the agent has no key -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>新问题：Agent 哪来的私钥？</h2>
+  <div style="margin-top: 40px;">
+    <p style="font-size: 0.95em;">Agent 是<strong>服务端进程</strong>。让它直接持有私钥风险太大：</p>
+    <ul style="margin-top: 12px;">
+      <li>泄漏一次 = 资产清零</li>
+      <li>Agent 有 prompt injection 风险</li>
+      <li>容器镜像可能被反编译</li>
+      <li>Audit / 合规要求私钥隔离</li>
+    </ul>
+  </div>
+  <div class="card" style="background: var(--accent-soft); border-color: var(--accent); margin-top: 40px;">
+    <div class="title" style="color: #92400e;">需要的是这种东西：</div>
+    <div class="body" style="color: #92400e;">
+      让 Agent <strong>有支付能力</strong>，但<strong>不持有 key</strong>。
+      签名能力托管在受 IAM 鉴权保护的后端。
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 6: Section divider — AgentCore Payments -->
+<!-- =================================================================== -->
+<section class="section-divider" data-background-color="#111">
+  <div class="num">// 02</div>
+  <h1>AgentCore Payments</h1>
+  <p class="desc">AWS 的托管签名 + 预算 + 审计方案</p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 7: AgentCore Payments overview -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>AgentCore Payments — 一句话</h2>
+  <div style="background: white; border-left: 4px solid var(--accent); padding: 24px 32px; margin: 30px 0;">
+    <p style="font-size: 1.05em; color: var(--fg); margin: 0; line-height: 1.5;">
+      AWS 在 <strong>2026 年 5 月</strong> 推出的 Bedrock AgentCore 子服务，<br>
+      帮 AI Agent <strong>托管</strong> 支付凭证 + <strong>签名</strong> 钱包交易 + <strong>审计</strong> 资金流向，<br>
+      原生支持 <strong>x402 协议</strong>。
+    </p>
+  </div>
+  <div class="cols-3" style="margin-top: 30px;">
+    <div class="card">
+      <div class="title">🔐 托管</div>
+      <div class="body">CDP 钱包凭证存在 AWS Secrets Manager，调用方零接触</div>
+    </div>
+    <div class="card">
+      <div class="title">💰 预算</div>
+      <div class="body">PaymentSession.maxSpendAmount 硬限制，超额直接拒绝</div>
+    </div>
+    <div class="card">
+      <div class="title">📜 审计</div>
+      <div class="body">每笔 ProcessPayment 调用都有 IAM 身份记录 + 链上可追溯</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 8: Object model -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>四层对象模型</h2>
+  <div class="flow" style="font-size: 0.75em; line-height: 1.7;">┌─────────────────────────────────────────────────────────┐
+│  PaymentCredentialProvider                              │
+│  ─ 把 CDP keys 存进 AWS Secrets Manager                  │
+│  ─ 调用方拿不到原始 secret                                │
+└────────────────────┬────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│  PaymentManager   (authorizerType=AWS_IAM)              │
+│  ─ 关联 ResourceRetrievalRole                           │
+│  ─ IAM 鉴权决定谁能调 ProcessPayment                       │
+└─────────────┬─────────────────────┬─────────────────────┘
+              ▼                     ▼
+┌─────────────────────┐    ┌─────────────────────────────┐
+│ PaymentConnector    │    │ PaymentSession              │
+│ ─ 绑定 vendor=CDP   │    │ ─ per-user 预算             │
+│ ─ 关联 provider     │    │ ─ maxSpendAmount=$1.0       │
+└──────────┬──────────┘    │ ─ expiryTimeInMinutes=480   │
+           ▼               └─────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│  PaymentInstrument  (EMBEDDED_CRYPTO_WALLET)            │
+│  ─ 真实的钱包实体                                          │
+│  ─ linkedAccounts=[email] → 绑到 CDP end user           │
+│  ─ 返回 walletAddress + WalletHub onboarding URL        │
+└─────────────────────────────────────────────────────────┘</div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 9: ProcessPayment flow -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>ProcessPayment 内部发生了什么</h2>
+  <pre><code class="language-python" data-trim data-noescape>
+dp.process_payment(
+    paymentManagerArn=...,
+    paymentSessionId=...,      # 预算控制
+    paymentInstrumentId=...,   # 用哪个钱包签
+    paymentInput={"cryptoX402": {"payload": x402_payload}}
+)</code></pre>
+  <div class="flow" style="margin-top: 18px; font-size: 0.7em;">服务端 (AgentCore Payments) 顺序执行：
+
+  <span class="ok">1.</span> 鉴权 ── 调用方有 ProcessPaymentRole 吗？
+  <span class="ok">2.</span> 预算 ── PaymentSession 里还剩多少额度？
+  <span class="ok">3.</span> 取 credential ── ResourceRetrievalRole assume → Secrets Manager 取 CDP keys
+  <span class="ok">4.</span> 构造 EIP-3009 authorization ── from / to / value / validAfter / validBefore / nonce
+  <span class="ok">5.</span> 让 CDP delegated signing 后端用 EIP-712 签名 (用 walletSecret)
+  <span class="ok">6.</span> 返回 <span style="color:#ff7b72">{ status: "PROOF_GENERATED", payload: { signature, authorization } }</span>
+
+⚠️ 这一步<strong>不上链</strong>！只生成签名 proof。</div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 10: End-to-end flow -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>完整端到端付款（~3 秒）</h2>
+  <div class="flow" style="font-size: 0.62em; line-height: 1.55;">USER PROMPT: "Get me the premium article"
+       │
+       ▼
+┌──────────────────────────┐
+│ AgentCore Runtime        │  Claude Sonnet 4 选择 request_content
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐
+│ CloudFront + Lambda@Edge │  无 X-PAYMENT → <span class="err">402 + accepts</span>
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐
+│ AgentCore Runtime        │  agent 选 process_payment
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐
+│ AgentCore Payments       │  IAM check → 预算 check → CDP 签名
+│ (us-west-2)              │  → <span class="ok">PROOF_GENERATED</span>
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐  base64(proof) → X-PAYMENT header
+│ AgentCore Runtime        │  GET /api/article + X-PAYMENT
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐
+│ Lambda@Edge              │  解码 X-PAYMENT → 调 facilitator
+│                          │  broadcast EIP-3009 → 等上链
+└──────────┬───────────────┘
+           ▼
+┌──────────────────────────┐
+│ Base Sepolia 链上         │  USDC: payer -1000 / seller +1000
+│                          │  tx: <span class="ok">0x9a96e6de7402...</span>
+└──────────┬───────────────┘
+           ▼
+        <span class="ok">200 OK + content + X-PAYMENT-RESPONSE</span></div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 11: Real demo result -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>真实 demo 跑通的那一刻</h2>
+  <pre style="margin-top: 20px;"><code class="language-bash" data-trim data-noescape>
+$ python invoke_agent.py "Get me the premium article"
+
+>> prompt:  Get me the premium article
+>> session: 90584474-d2ca-4dd1-a158-3c6618a27cbc
+
+{
+  "response": "Excellent! I've successfully retrieved the premium
+   article for you. Payment: 0.001 USDC. Transaction:
+   <span style="color:#79c0ff">0x9a96e6de7402b2e35134391b1269778040429190d7e072506f1135f984daf87b</span>
+   Status: Successfully settled on-chain.",
+  "status": "success"
+}</code></pre>
+  <div class="cols" style="margin-top: 24px;">
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--fg);">链上余额变化</h3>
+      <pre style="margin: 0;"><code class="language-text" data-trim>
+payer   0x9e94...: <span style="color:#ef4444">−0.001</span> USDC
+seller  0xF72b...: <span style="color:#10b981">+0.001</span> USDC</code></pre>
+    </div>
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--fg);">链上验证</h3>
+      <p class="small mono">
+        sepolia.basescan.org/tx/<br>0x9a96e6de7402…<br>
+        <span class="muted">Block 41404209 · Status: 1 ✓</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 12: Section divider — what's in the repo -->
+<!-- =================================================================== -->
+<section class="section-divider" data-background-color="#111">
+  <div class="num">// 03</div>
+  <h1>GitHub 资源</h1>
+  <p class="desc">从零跑通它需要的所有材料</p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 13: Repository overview -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>项目仓库结构</h2>
+  <p class="small mono"><a href="https://github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments" target="_blank">github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments</a></p>
+  <pre style="margin-top: 16px;"><code class="language-text" data-trim>
+sample-agentcore-cloudfront-x402-payments/
+├── DEPLOY.md              ← 一份就够的部署文档（推荐入口）
+├── ARCHITECTURE.md        ← 原理深入（x402 / EIP-3009 / 信任模型）
+├── DEPLOYMENT_NOTES.md    ← 实战日志（14 个踩坑记录）
+├── RUNBOOK.md             ← 简版步骤手册
+│
+├── scripts/runbook/       ← 配套脚本（5 个）
+│   ├── 01_patch_iam_role.sh
+│   ├── 02_create_cdp_end_user.py
+│   ├── 03_create_payments_resources.py
+│   ├── 04_check_balances.py
+│   └── 05_invoke_agent.py
+│
+├── seller-infrastructure/ ← CDK: CloudFront + Lambda@Edge (us-east-1)
+├── payer-infrastructure/  ← CDK: IAM roles (us-west-2)
+└── payer-agent/           ← Strands Agent + AgentCore Runtime</code></pre>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 14: Documents at a glance -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>四份文档分层</h2>
+  <table class="comp" style="margin-top: 30px;">
+    <thead>
+      <tr><th>文档</th><th>给谁看</th><th>体量</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>DEPLOY.md</strong> ⭐</td>
+        <td>想跑通的人——读这一份就够</td>
+        <td class="mono">879 行</td>
+      </tr>
+      <tr>
+        <td>ARCHITECTURE.md</td>
+        <td>想深入理解协议和信任模型</td>
+        <td class="mono">461 行</td>
+      </tr>
+      <tr>
+        <td>DEPLOYMENT_NOTES.md</td>
+        <td>想看每个修复对应的真实坑</td>
+        <td class="mono">379 行</td>
+      </tr>
+      <tr>
+        <td>RUNBOOK.md</td>
+        <td>更短的纯步骤版（DEPLOY 子集）</td>
+        <td class="mono">495 行</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="small muted center" style="margin-top: 30px;">
+    上游 README.md / QUICKSTART.md 还基于 preview 早期版本，已过时
+  </p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 15: Deploy in 7 parts -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>部署流程（7 步）</h2>
+  <div style="margin-top: 24px;">
+    <p><span class="step-num">1</span> <strong>CDP 配置</strong> ── 拿 API key + walletSecret，启 Delegated Signing，配 CORS</p>
+    <p><span class="step-num">2</span> <strong>克隆代码</strong> ── 设环境变量 <code>CDP_API_KEY_ID</code> 等</p>
+    <p><span class="step-num">3</span> <strong>Seller CDK</strong> <span class="pill">us-east-1</span> ── CloudFront + Lambda@Edge（Lambda@Edge 强制 us-east-1）</p>
+    <p><span class="step-num">4</span> <strong>Payer CDK + 补 IAM</strong> <span class="pill">us-west-2</span> ── 补 CDK 漏掉的 <code>CreateWorkloadIdentity</code> 等权限</p>
+    <p><span class="step-num">5</span> <strong>建 Payments 资源</strong> ── 5 子步：建 CDP end user → provider → manager → connector → instrument → session → WalletHub 授权 → faucet</p>
+    <p><span class="step-num">6</span> <strong>部署 Agent</strong> ── docker buildx <code>--platform linux/arm64</code></p>
+    <p><span class="step-num">7</span> <strong>端到端测试</strong> ── 看 payer/seller 链上余额变化</p>
+  </div>
+  <p class="small muted center" style="margin-top: 36px;">
+    首次部署 1-2 小时（CloudFront 分发慢 + arm64 build emulation 慢）
+  </p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 16: Pitfalls -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>14 个真实踩坑（DEPLOY.md 第 10 部分）</h2>
+  <table class="comp" style="font-size: 0.6em; margin-top: 16px;">
+    <thead><tr><th>类</th><th>症状</th><th>修法</th></tr></thead>
+    <tbody>
+      <tr><td>SDK</td><td>boto3 没有 create_payment_*</td><td>升 ≥ 1.43，需要 Python ≥ 3.10</td></tr>
+      <tr><td>CDK</td><td>Stack 跑到错的 region</td><td>显式传 AWS_REGION=us-west-2</td></tr>
+      <tr><td>IAM</td><td>create_payment_manager AccessDenied</td><td>跑 01_patch_iam_role.sh</td></tr>
+      <tr><td>API</td><td>Schema 字段名变了</td><td>EMBEDDED_CRYPTO_WALLET / linkedAccounts / expiryTimeInMinutes</td></tr>
+      <tr><td>CDP</td><td>create_instrument 500</td><td>启用 Delegated Signing + 真实 end user 邮箱</td></tr>
+      <tr><td>CDP</td><td>WalletHub 报 CORS</td><td>加 hub.cdp.coinbase.com origin</td></tr>
+      <tr><td>CDP</td><td>WalletHub "No accounts"</td><td>用 Email OTP 登录，<strong>不是</strong> Google OAuth</td></tr>
+      <tr><td>Runtime</td><td>Architecture incompatible</td><td>docker buildx --platform linux/arm64</td></tr>
+      <tr><td>Runtime</td><td>422 + Invalid HTTP request</td><td>/invocations 改读 raw body</td></tr>
+      <tr><td>Runtime</td><td>on-demand throughput 不支持</td><td>用 us.anthropic.claude-... inference profile</td></tr>
+      <tr><td>E2E</td><td>retry 时 403 Forbidden</td><td>retry 改用 GET（CloudFront 不允许 POST）</td></tr>
+      <tr><td>Money</td><td>Faucet 钱"消失"</td><td>钱要打到 payer 钱包（instrument 返回的地址）</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 17: What's open -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>这套系统<strong>不</strong>解决的问题</h2>
+  <div class="cols" style="margin-top: 30px;">
+    <div>
+      <h3 style="font-size: 0.95em; color: var(--fg);">✅ 协议解决了</h3>
+      <ul style="font-size: 0.8em;">
+        <li><strong>重复扣款</strong> ─ EIP-3009 nonce 防重放</li>
+        <li><strong>超额支出</strong> ─ Session 预算硬限制</li>
+        <li><strong>密钥泄漏</strong> ─ Secret 存 Secrets Manager + Delegated Signing</li>
+        <li><strong>审计追溯</strong> ─ 链上 + IAM 双轨</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="font-size: 0.95em; color: var(--fg);">❌ 协议<em>不</em>解决</h3>
+      <ul style="font-size: 0.8em;">
+        <li><strong>退款 / 争议</strong> ─ 链上不可逆，没有 RefundAPI</li>
+        <li><strong>内容质量保证</strong> ─ 付了不一定满意</li>
+        <li><strong>定价发现</strong> ─ 402 给的是 take-it-or-leave-it</li>
+        <li><strong>合规 KYC/AML</strong> ─ 测试网随意，主网各地不同</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="background: #f3f4f6; margin-top: 30px; border: none;">
+    <div class="body">
+      退款的解法：seller 应用层主动发反向 ERC20 transfer，或上 escrow 合约让钱先入托管 + 争议期。
+      AgentCore Payments 的设计哲学是<strong>"链上即终局"</strong>——把退款明确推给应用层。
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 18: What this means -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>这件事的意义</h2>
+  <p style="font-size: 0.9em; margin-top: 30px;">
+    过去 20 年，互联网上所有收费都绑在<strong>账户</strong>上：注册、KYC、绑卡、订阅。
+  </p>
+  <p style="font-size: 0.9em; margin-top: 20px;">
+    x402 + AgentCore Payments 在做不一样的事：
+  </p>
+  <div style="background: white; border: 2px solid var(--accent); border-radius: 12px; padding: 30px; margin-top: 30px; text-align: center;">
+    <p style="font-size: 1.2em; color: var(--fg); margin: 0; font-weight: 600;">
+      让支付变成一次 HTTP 请求级别的<span class="hl">原语</span>
+    </p>
+  </div>
+  <ul style="font-size: 0.8em; margin-top: 30px;">
+    <li>内容提供者只要一个链上地址，无需账户体系</li>
+    <li>消费者带个支付 header 即可，无需预先注册</li>
+    <li>Agent 之间互相调用可以实时结清，不需要平台撮合</li>
+    <li>微支付（亚美分级）经济上可行</li>
+  </ul>
+  <p class="small muted center" style="margin-top: 30px;">
+    这不是替换现有支付体系，是为<strong>机器对机器的经济</strong>打地基。
+  </p>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 19: Resources -->
+<!-- =================================================================== -->
+<section data-background-color="#fafafa">
+  <h2>相关资源</h2>
+  <div style="margin-top: 30px;">
+    <a class="asset-link" href="https://github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments" target="_blank">
+      <div class="name">github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments</div>
+      <div class="desc">本次 demo 的 fork — 包含 4 个真 bug 修复 + 完整文档 + 5 个 runbook 脚本</div>
+    </a>
+    <a class="asset-link" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments.html" target="_blank">
+      <div class="name">docs.aws.amazon.com/bedrock-agentcore/.../payments.html</div>
+      <div class="desc">AgentCore Payments 官方文档（API 参考 + 概念）</div>
+    </a>
+    <a class="asset-link" href="https://github.com/coinbase/x402/tree/main/specs" target="_blank">
+      <div class="name">github.com/coinbase/x402/tree/main/specs</div>
+      <div class="desc">x402 协议规范（v1 + v2 + extensions）</div>
+    </a>
+    <a class="asset-link" href="https://eips.ethereum.org/EIPS/eip-3009" target="_blank">
+      <div class="name">eips.ethereum.org/EIPS/eip-3009</div>
+      <div class="desc">transferWithAuthorization 原始 EIP 提案</div>
+    </a>
+    <a class="asset-link" href="https://docs.cdp.coinbase.com/embedded-wallets" target="_blank">
+      <div class="name">docs.cdp.coinbase.com/embedded-wallets</div>
+      <div class="desc">Coinbase Developer Platform Embedded Wallets 文档</div>
+    </a>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SLIDE 20: Closing -->
+<!-- =================================================================== -->
+<section class="title-slide" data-background-color="#fafafa">
+  <div class="eyebrow">END</div>
+  <h1>Q & A</h1>
+  <div class="sub">让 AI Agent 真正参与经济活动的开始</div>
+  <div style="margin-top: 60px;">
+    <p class="small mono center">
+      git clone github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments<br>
+      <span class="muted">→ 打开 DEPLOY.md → 1-2 小时跑通</span>
+    </p>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    width: 1280,
+    height: 800,
+    margin: 0.06,
+    minScale: 0.4,
+    maxScale: 2.0,
+    plugins: [RevealHighlight, RevealNotes],
+  });
+</script>
+</body>
+</html>
