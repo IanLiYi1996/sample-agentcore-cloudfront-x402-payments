@@ -18,7 +18,7 @@ import os
 import uuid
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -158,18 +158,27 @@ async def test_endpoint(request: InvokeRequest):
 
 
 @app.post("/invocations")
-async def invocations(request: InvokeRequest):
+async def invocations(http_request: Request):
     """AgentCore invocation endpoint - primary agent interaction."""
     import logging
     import traceback
     import sys
-    
+
     logger = logging.getLogger(__name__)
-    logger.info(f"Received invocation request: {request}")
-    
+    raw = await http_request.body()
+    logger.info(f"Received raw body ({len(raw)} bytes): {raw[:500]!r}")
+    logger.info(f"Headers: {dict(http_request.headers)}")
+    try:
+        body = json.loads(raw) if raw else {}
+    except Exception as e:
+        logger.error(f"JSON parse failed: {e}")
+        body = {}
+    request = InvokeRequest(**body)
+    logger.info(f"Parsed invocation request: {request}")
+
     session_id = request.session_id or str(uuid.uuid4())
     prompt_text = request.text
-    
+
     if not prompt_text:
         logger.error("No prompt or message provided")
         raise HTTPException(400, "Either 'prompt' or 'message' field is required")

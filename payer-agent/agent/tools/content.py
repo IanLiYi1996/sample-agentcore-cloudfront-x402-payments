@@ -266,7 +266,7 @@ def request_content_with_payment(url: str) -> dict[str, Any]:
         try:
             with httpx.Client(timeout=30.0) as client:
                 for attempt in range(1, max_attempts + 1):
-                    response = client.post(
+                    response = client.get(
                         full_url,
                         headers={
                             "Accept": "application/json",

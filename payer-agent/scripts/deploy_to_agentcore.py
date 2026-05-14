@@ -96,9 +96,10 @@ def build_and_push_image(repo_uri: str) -> str:
     
     print(f"  Building image: {image_uri}")
     
-    # Build
+    # Build (AgentCore Runtime requires arm64)
     result = subprocess.run(
-        ["docker", "build", "-t", image_uri, "-f", "Dockerfile", "."],
+        ["docker", "buildx", "build", "--platform", "linux/arm64",
+         "-t", image_uri, "-f", "Dockerfile", "--load", "."],
         cwd=agent_dir,
         capture_output=True,
     )
@@ -169,13 +170,14 @@ def get_env_vars() -> dict:
     # Only include specific variables needed by the agent
     allowed_vars = [
         "AWS_REGION",
-        "CDP_API_KEY_ID",
-        "CDP_API_KEY_SECRET",
-        "CDP_WALLET_SECRET",
-        "CDP_WALLET_ADDRESS",
-        "NETWORK_ID",
         "BEDROCK_MODEL_ID",
-        "SELLER_API_URL",  # Required for content tools to reach CloudFront
+        "SELLER_API_URL",
+        # AgentCore Payments config
+        "MANAGER_ARN",
+        "PAYMENT_SESSION_ID",
+        "PAYMENT_INSTRUMENT_ID",
+        "PROCESS_PAYMENT_ROLE_ARN",
+        "USER_ID",
     ]
     
     return {k: v for k, v in env.items() if k in allowed_vars and v}
