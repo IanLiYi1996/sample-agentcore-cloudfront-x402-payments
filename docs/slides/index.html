@@ -10,135 +10,271 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
 
   <style>
+    /* ==================== Design System ==================== */
     :root {
-      --bg: #fafbfc;
-      --fg: #0f172a;
-      --muted: #64748b;
-      --soft: #475569;
+      /* Colors — refined */
+      --bg: #ffffff;
+      --bg-tint: #fafafa;
+      --ink: #0a0a0a;
+      --ink-2: #2c2c2c;
+      --ink-3: #5b5b5b;
+      --ink-4: #8e8e8e;
+      --line: #e8e8e8;
+      --line-strong: #d0d0d0;
+
       --accent: #ff6b35;
-      --accent-soft: #fff1e6;
-      --accent-dark: #c2410c;
-      --secondary: #0ea5e9;
-      --secondary-soft: #e0f2fe;
-      --link: #2563eb;
-      --code-bg: #0f172a;
-      --code-fg: #e2e8f0;
-      --green: #10b981;
-      --red: #ef4444;
-      --amber: #f59e0b;
-      --border: #e2e8f0;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03);
-      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+      --accent-2: #d94e1f;
+      --accent-tint: #fff5ef;
+
+      --code-bg: #0f1419;
+      --code-fg: #e6e6e6;
+      --code-comment: #6a6a6a;
+      --code-keyword: #ff7b72;
+      --code-string: #a5d6ff;
+      --code-number: #79c0ff;
+      --code-success: #56d364;
+
+      /* Typography scale */
+      --font-display: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", "Source Han Sans SC", Arial, sans-serif;
+      --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
     }
 
+    /* ==================== Base ==================== */
     .reveal {
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", "Source Han Sans SC", Arial, sans-serif;
-      color: var(--fg);
+      font-family: var(--font-display);
+      color: var(--ink);
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
+
     .reveal .slides section {
       text-align: left;
-      padding: 6px 14px;
+      padding: 48px 64px;
       height: 100%;
       box-sizing: border-box;
       overflow: hidden;
     }
-    .reveal h1, .reveal h2, .reveal h3 { color: var(--fg); font-weight: 800; letter-spacing: -0.5px; text-transform: none; }
-    .reveal h1 { font-size: 2.4em; line-height: 1.1; margin: 0 0 0.4em; }
-    .reveal h2 { font-size: 1.4em; line-height: 1.2; margin: 0 0 0.35em; }
-    .reveal h3 { font-size: 0.95em; color: var(--soft); font-weight: 600; margin: 0 0 0.3em; }
-    .reveal p, .reveal li { color: var(--soft); line-height: 1.5; font-size: 0.72em; }
-    .reveal strong { color: var(--fg); font-weight: 600; }
-    .reveal a { color: var(--link); text-decoration: none; }
-    .reveal a:hover { color: var(--accent); }
-    .reveal pre { box-shadow: var(--shadow-md); margin: 0; }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      color: var(--ink);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      line-height: 1.15;
+    }
+    .reveal h1 { font-size: 2.4em; margin: 0 0 0.35em; font-weight: 800; }
+    .reveal h2 { font-size: 1.35em; margin: 0 0 0.45em; font-weight: 700; }
+    .reveal h3 {
+      font-size: 0.65em; color: var(--ink-3); font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    .reveal p, .reveal li {
+      color: var(--ink-2);
+      line-height: 1.6;
+      font-size: 0.7em;
+      font-weight: 400;
+    }
+    .reveal strong { color: var(--ink); font-weight: 600; }
+    .reveal em { font-style: italic; color: var(--ink-2); }
+
+    .reveal a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+    .reveal a:hover { color: var(--accent); border-color: var(--accent); }
+
+    .reveal pre { box-shadow: none; margin: 0; }
     .reveal pre code {
       font-size: 0.5em;
-      line-height: 1.5;
-      padding: 14px 18px;
-      border-radius: 10px;
+      line-height: 1.6;
+      padding: 24px 28px;
+      border-radius: 4px;
       background: var(--code-bg);
-      max-height: 380px;
+      max-height: 480px;
+      font-family: var(--font-mono);
     }
-    .reveal code { font-family: "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace; }
     .reveal :not(pre) > code {
-      background: #f1f5f9; color: var(--accent-dark);
-      padding: 1px 6px; border-radius: 4px;
-      font-size: 0.85em; border: 1px solid var(--border);
+      background: var(--bg-tint);
+      color: var(--accent-2);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.85em;
+      border: 1px solid var(--line);
+      font-family: var(--font-mono);
+      font-weight: 500;
     }
 
-    .muted { color: var(--muted); }
-    .small { font-size: 0.65em; }
-    .xsmall { font-size: 0.55em; }
+    /* Utilities */
+    .mono { font-family: var(--font-mono); }
+    .small { font-size: 0.55em; }
+    .xsmall { font-size: 0.45em; }
     .center { text-align: center; }
-    .mono { font-family: "SF Mono", "JetBrains Mono", Menlo, monospace; }
-    .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 4px; }
+    .muted { color: var(--ink-4); }
+    .ink-2 { color: var(--ink-2); }
 
-    /* ============ title slide ============ */
-    .title-slide {
-      text-align: center !important;
+    /* ==================== Slide chrome ==================== */
+    .reveal .slide-number {
+      font-family: var(--font-mono); font-size: 0.5em;
+      color: var(--ink-4); background: transparent;
+      right: 32px; bottom: 24px;
+      font-weight: 500;
+    }
+    .reveal .progress { color: var(--accent); height: 2px; }
+
+    /* slide watermark — "01 / 33" style top-right */
+    .watermark {
+      position: absolute;
+      top: 40px;
+      right: 60px;
+      font-family: var(--font-mono);
+      font-size: 0.4em;
+      color: var(--ink-4);
+      letter-spacing: 0.15em;
+      font-weight: 500;
+    }
+    .watermark .accent { color: var(--accent); }
+
+    /* slide kicker — small label above title */
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 0.45em;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: inline-block;
+    }
+    .kicker::before {
+      content: "—";
+      margin-right: 12px;
+      color: var(--accent);
+    }
+
+    /* ==================== Cover slide ==================== */
+    .cover {
       display: flex !important;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
       height: 100%;
+      padding: 80px !important;
+      background: var(--bg);
+      position: relative;
     }
-    .title-slide .logo-row { display: flex; gap: 22px; align-items: center; margin-bottom: 30px; opacity: 0.85; }
-    .title-slide .logo-row .lbl {
-      font-size: 0.6em; color: var(--muted); font-family: "SF Mono", monospace;
-      letter-spacing: 2px; text-transform: uppercase;
+    .cover .top-meta {
+      font-family: var(--font-mono);
+      font-size: 0.45em;
+      color: var(--ink-4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: flex;
+      gap: 24px;
+      align-items: center;
     }
-    .title-slide .logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-    .title-slide h1 { font-size: 2.8em; margin-bottom: 0.2em; }
-    .title-slide .accent { color: var(--accent); }
-    .title-slide .sub { font-size: 1em; color: var(--soft); margin-bottom: 50px; max-width: 720px; }
-    .title-slide .badges { display: flex; gap: 8px; margin-bottom: 36px; }
-    .title-slide .badge {
-      font-family: "SF Mono", monospace; font-size: 0.55em; font-weight: 600;
-      padding: 6px 12px; border-radius: 4px; letter-spacing: 0.5px;
+    .cover .top-meta .dot {
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
     }
-    .title-slide .badge.b1 { background: var(--accent-soft); color: var(--accent-dark); }
-    .title-slide .badge.b2 { background: var(--secondary-soft); color: #0369a1; }
-    .title-slide .badge.b3 { background: #f1f5f9; color: var(--soft); }
-    .title-slide .meta { font-size: 0.6em; color: var(--muted); font-family: "SF Mono", monospace; }
+    .cover .main {
+      max-width: 900px;
+    }
+    .cover h1 {
+      font-size: 3.4em;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      font-weight: 800;
+    }
+    .cover h1 .accent { color: var(--accent); }
+    .cover .sub {
+      font-size: 0.9em;
+      color: var(--ink-3);
+      max-width: 720px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+    .cover .bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-family: var(--font-mono);
+      font-size: 0.4em;
+      color: var(--ink-4);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .cover .bottom-row .badges {
+      display: flex; gap: 10px;
+    }
+    .cover .bottom-row .badge {
+      padding: 5px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 100px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .cover .bottom-row .badge.primary {
+      background: var(--ink); color: white; border-color: var(--ink);
+    }
 
-    /* ============ section divider (cinematic) ============ */
-    .section-divider {
-      background: var(--fg);
+    /* ==================== Section divider ==================== */
+    .section {
+      background: var(--ink) !important;
       color: white !important;
-      text-align: center !important;
       display: flex !important;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
       height: 100%;
+      padding: 80px !important;
       position: relative;
       overflow: hidden;
     }
-    .section-divider::before {
-      content: ""; position: absolute;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 107, 53, 0.18), transparent 70%);
-      top: -200px; right: -200px;
+    .section .big-num {
+      position: absolute;
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 22em;
+      font-weight: 800;
+      color: rgba(255, 107, 53, 0.06);
+      line-height: 0.85;
+      letter-spacing: -0.05em;
       pointer-events: none;
     }
-    .section-divider .num {
-      font-family: "SF Mono", monospace; color: var(--accent);
-      font-size: 0.55em; margin-bottom: 14px; letter-spacing: 4px; font-weight: 700;
+    .section .label {
+      font-family: var(--font-mono);
+      font-size: 0.5em;
+      color: var(--accent);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 20px;
     }
-    .section-divider h1 { color: white !important; font-size: 2.4em; margin-bottom: 0.3em; max-width: 80%; }
-    .section-divider .desc { color: #cbd5e1 !important; font-size: 0.85em; max-width: 600px; }
-    .section-divider .quote {
-      font-style: italic; color: #cbd5e1 !important;
-      font-size: 0.9em; max-width: 700px; margin-top: 30px;
-      line-height: 1.5;
+    .section h1 {
+      color: white !important;
+      font-size: 3em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      max-width: 80%;
+      font-weight: 800;
     }
-    .section-divider .quote::before { content: "「"; }
-    .section-divider .quote::after { content: "」"; }
+    .section .desc {
+      color: rgba(255, 255, 255, 0.55) !important;
+      font-size: 0.85em;
+      max-width: 580px;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+    .section .desc strong {
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+    }
 
-    /* ============ "story" full-bleed slides ============ */
+    /* ==================== Story slide ==================== */
     .story {
       display: flex !important;
       flex-direction: column;
@@ -146,258 +282,375 @@
       align-items: center;
       height: 100%;
       text-align: center !important;
-      padding: 40px;
+      padding: 80px !important;
     }
-    .story .hook {
-      font-size: 1.3em; color: var(--fg); font-weight: 600; line-height: 1.5;
-      max-width: 880px; margin-bottom: 30px;
+    .story .lede {
+      font-size: 1.5em;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 880px;
+      letter-spacing: -0.01em;
     }
-    .story .hook .accent { color: var(--accent); }
-    .story .reveal-text {
-      font-size: 0.9em; color: var(--soft);
-      max-width: 700px; line-height: 1.6;
-    }
+    .story .lede .accent { color: var(--accent); font-weight: 700; }
+    .story .lede strong { font-weight: 700; }
     .story .punch {
-      font-size: 1.6em; color: var(--accent);
-      font-weight: 800; margin-top: 20px;
+      font-size: 2em;
+      color: var(--accent);
+      font-weight: 800;
+      margin-top: 32px;
+      letter-spacing: -0.02em;
+    }
+    .story .footnote {
+      max-width: 700px;
+      font-size: 0.7em;
+      color: var(--ink-3);
+      line-height: 1.7;
+      margin-top: 36px;
     }
 
-    /* ============ layouts ============ */
-    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
-    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    /* ==================== Layouts ==================== */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-    /* ============ cards ============ */
+    /* ==================== Refined card ==================== */
     .card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
-      box-shadow: var(--shadow-sm);
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 20px 22px;
+      transition: border-color 0.2s ease;
+    }
+    .card .num {
+      font-family: var(--font-mono);
+      font-size: 0.6em;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
     }
     .card .title {
-      font-weight: 700; color: var(--fg); margin-bottom: 4px;
-      font-size: 0.78em; display: flex; align-items: center; gap: 6px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 6px;
+      font-size: 0.85em;
+      letter-spacing: -0.01em;
     }
-    .card .body { font-size: 0.65em; color: var(--soft); line-height: 1.45; }
-    .card.accent { border-left: 4px solid var(--accent); }
-    .card.secondary { border-left: 4px solid var(--secondary); }
-    .card.success { border-left: 4px solid var(--green); }
-    .card.danger { border-left: 4px solid var(--red); }
-    .card.amber { border-left: 4px solid var(--amber); }
+    .card .body {
+      font-size: 0.62em;
+      color: var(--ink-3);
+      line-height: 1.55;
+      font-weight: 400;
+    }
+    .card .body strong { color: var(--ink); font-weight: 600; }
+    .card.outlined { border: 1px solid var(--line); }
+    .card.flat { background: var(--bg-tint); border: none; }
+    .card.dark { background: var(--ink); border: none; }
+    .card.dark .title, .card.dark .body { color: white; }
+    .card.dark .body { color: rgba(255, 255, 255, 0.7); }
 
-    /* ============ pills ============ */
-    .pill {
-      display: inline-block; padding: 2px 10px; border-radius: 14px;
-      font-size: 0.55em; font-family: "SF Mono", monospace;
-      font-weight: 600; letter-spacing: 0.5px; vertical-align: middle;
-    }
-    .pill.orange { background: var(--accent-soft); color: var(--accent-dark); }
-    .pill.sky { background: var(--secondary-soft); color: #0369a1; }
-    .pill.green { background: #d1fae5; color: #065f46; }
-    .pill.red { background: #fee2e2; color: #991b1b; }
-    .pill.gray { background: #f1f5f9; color: var(--soft); }
-
-    /* ============ pipeline ============ */
-    .pipeline {
-      display: grid; grid-template-columns: repeat(7, 1fr);
-      gap: 0; align-items: stretch; margin-top: 10px;
-    }
-    .pipeline .node {
-      background: white; border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 6px; text-align: center;
-      box-shadow: var(--shadow-sm); position: relative; font-size: 0.58em;
-    }
-    .pipeline .node .icon {
-      width: 26px; height: 26px; margin: 0 auto 4px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; background: var(--accent-soft);
-      color: var(--accent-dark); font-weight: 700;
-      font-family: "SF Mono", monospace; font-size: 0.85em;
-    }
-    .pipeline .node .lbl { font-weight: 700; color: var(--fg); font-size: 1em; margin-bottom: 1px; }
-    .pipeline .node .sub { color: var(--muted); font-size: 0.85em; line-height: 1.3; }
-    .pipeline .node.payment .icon { background: #fee2e2; color: #991b1b; }
-    .pipeline .node.proof .icon { background: var(--secondary-soft); color: #0369a1; }
-    .pipeline .node.success .icon { background: #d1fae5; color: #065f46; }
-    .pipeline .arrow {
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent); font-size: 1.2em; font-weight: 700;
-    }
-
-    /* ============ object tree ============ */
-    .tree { display: flex; flex-direction: column; gap: 8px; }
-    .tree .obj {
-      background: white; border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 14px;
-      box-shadow: var(--shadow-sm);
-      display: grid; grid-template-columns: 30px 1fr auto;
-      gap: 12px; align-items: center;
-    }
-    .tree .obj .icon {
-      width: 28px; height: 28px; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-family: "SF Mono", monospace; font-size: 0.7em;
-    }
-    .tree .obj.l1 .icon { background: var(--accent-soft); color: var(--accent-dark); }
-    .tree .obj.l2 .icon { background: var(--secondary-soft); color: #0369a1; }
-    .tree .obj.l3 .icon { background: #ecfdf5; color: #065f46; }
-    .tree .obj.l4 .icon { background: #fef3c7; color: #92400e; }
-    .tree .obj.l5 .icon { background: #f3e8ff; color: #6b21a8; }
-    .tree .obj .name { font-weight: 700; font-family: "SF Mono", monospace; color: var(--fg); font-size: 0.7em; }
-    .tree .obj .desc { font-size: 0.6em; color: var(--soft); margin-top: 2px; line-height: 1.4; }
-    .tree .obj .tag { font-size: 0.5em; color: var(--muted); font-family: "SF Mono", monospace; }
-
-    /* ============ table ============ */
-    table.comp {
-      width: 100%; border-collapse: separate; border-spacing: 0;
-      font-size: 0.62em; background: white;
-      border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);
-    }
-    table.comp th, table.comp td { padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-    table.comp th {
-      color: var(--muted); font-weight: 600;
-      font-size: 0.85em; letter-spacing: 0.5px; text-transform: uppercase;
-      background: #fafbfc;
-    }
-    table.comp tr:last-child td { border-bottom: none; }
-
-    /* ============ asset link ============ */
-    .asset-link {
-      display: flex; gap: 12px; padding: 10px 16px;
-      background: white; border: 1px solid var(--border);
-      border-radius: 8px; margin-bottom: 6px;
-      text-decoration: none !important;
-      transition: all 0.15s ease; align-items: center;
-    }
-    .asset-link:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: var(--shadow-md); }
-    .asset-link .marker {
-      width: 24px; height: 24px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--accent-soft); color: var(--accent-dark);
-      border-radius: 6px; font-weight: 800; font-size: 0.75em;
-      font-family: "SF Mono", monospace;
-    }
-    .asset-link .text { flex: 1; }
-    .asset-link .name {
-      font-family: "SF Mono", monospace; font-weight: 600;
-      color: var(--fg) !important; font-size: 0.65em; line-height: 1.3;
-    }
-    .asset-link .desc { color: var(--muted) !important; font-size: 0.55em; margin-top: 1px; line-height: 1.4; }
-
-    /* ============ result box ============ */
-    .result-box {
-      background: linear-gradient(135deg, var(--accent-soft) 0%, white 100%);
-      border: 2px solid var(--accent); border-radius: 10px;
-      padding: 12px 18px;
-    }
-    .result-box .row {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 3px 0;
-      border-bottom: 1px dashed rgba(255, 107, 53, 0.2);
-    }
-    .result-box .row:last-child { border-bottom: none; }
-    .result-box .lbl { color: var(--soft); font-size: 0.65em; font-family: "SF Mono", monospace; letter-spacing: 0.5px; }
-    .result-box .val { color: var(--fg); font-size: 0.72em; font-weight: 700; font-family: "SF Mono", monospace; }
-    .result-box .val.green { color: var(--green); }
-    .result-box .val.red { color: var(--red); }
-
-    /* ============ http demo ============ */
-    .http-demo {
-      background: white; border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 18px;
-      box-shadow: var(--shadow-sm);
-      font-family: "SF Mono", monospace; font-size: 0.55em; line-height: 1.6;
-    }
-    .http-demo .req { color: var(--secondary); font-weight: 700; }
-    .http-demo .res-402 { color: var(--red); font-weight: 700; }
-    .http-demo .res-200 { color: var(--green); font-weight: 700; }
-    .http-demo .ind { padding-left: 22px; color: var(--soft); }
-    .http-demo .h-key { color: var(--accent-dark); font-weight: 700; }
-    .http-demo .comment { color: var(--muted); font-style: italic; }
-
-    /* ============ stage tag ============ */
-    .stage-tag {
-      display: inline-block;
-      font-family: "SF Mono", monospace;
-      font-size: 0.55em; font-weight: 700; letter-spacing: 1.5px;
-      color: var(--accent);
-      padding: 3px 10px; background: var(--accent-soft);
-      border-radius: 4px; margin-bottom: 10px; text-transform: uppercase;
-    }
-
-    /* ============ callout ============ */
-    .callout {
-      background: linear-gradient(135deg, #fff8f3 0%, white 100%);
-      border-left: 4px solid var(--accent);
-      border-radius: 8px; padding: 12px 18px;
-      margin: 10px 0;
-      box-shadow: var(--shadow-sm);
-    }
-    .callout p { margin: 0; color: var(--fg); font-size: 0.78em; }
-
-    .callout.amber { background: linear-gradient(135deg, #fffbeb 0%, white 100%); border-left-color: var(--amber); }
-    .callout.sky { background: linear-gradient(135deg, #f0f9ff 0%, white 100%); border-left-color: var(--secondary); }
-
-    /* ============ timeline ============ */
-    .timeline-item {
-      display: grid; grid-template-columns: 26px 1fr;
-      gap: 10px; align-items: start; padding: 3px 0;
-    }
-    .timeline-item .num {
-      width: 22px; height: 22px;
-      border-radius: 50%; background: var(--accent);
-      color: white; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      font-family: "SF Mono", monospace; font-size: 0.7em;
-      box-shadow: 0 2px 6px rgba(255, 107, 53, 0.3);
-    }
-    .timeline-item .text { font-size: 0.65em; color: var(--soft); padding-top: 1px; line-height: 1.4; }
-    .timeline-item .text strong { color: var(--fg); display: block; margin-bottom: 0; font-size: 1em; }
-
-    /* ============ slide number / progress ============ */
-    .reveal .slide-number {
-      font-family: "SF Mono", monospace; font-size: 0.5em;
-      color: var(--muted); background: transparent;
-      right: 24px; bottom: 18px;
-    }
-    .reveal .progress { color: var(--accent); height: 3px; }
-
-    /* ============ solidity highlight (manual) ============ */
-    .sol { color: var(--code-fg); font-family: "SF Mono", monospace; font-size: 0.7em; line-height: 1.6; }
-    .sol .kw { color: #ff7b72; }
-    .sol .ty { color: #79c0ff; }
-    .sol .com { color: #8b949e; font-style: italic; }
-    .sol .id { color: #d2a8ff; }
-
-    /* ============ stat numbers ============ */
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    /* ==================== Stat block ==================== */
     .stat {
-      background: white; border-radius: 12px; padding: 18px 14px;
-      text-align: center; border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
     }
     .stat .num {
-      font-size: 2em; color: var(--accent); font-weight: 800;
-      font-family: "SF Mono", monospace; line-height: 1;
+      font-size: 2.4em;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      line-height: 1;
+      font-family: var(--font-mono);
     }
-    .stat .lbl { font-size: 0.65em; color: var(--soft); margin-top: 6px; }
+    .stat .num .accent { color: var(--accent); }
+    .stat .label {
+      font-size: 0.55em;
+      color: var(--ink-3);
+      margin-top: 10px;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
 
-    /* ============ before/after ============ */
-    .before-after { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 10px; align-items: stretch; }
-    .ba-box {
-      background: white; border-radius: 10px; padding: 14px 16px;
-      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    /* ==================== Pill ==================== */
+    .pill {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.6em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      vertical-align: middle;
+      border: 1px solid var(--line-strong);
+      color: var(--ink-2);
     }
-    .ba-box.before { border-left: 4px solid var(--red); }
-    .ba-box.after { border-left: 4px solid var(--green); }
-    .ba-box h3 { font-size: 0.85em; margin-bottom: 8px; }
-    .ba-box ul { padding-left: 18px; margin: 0; }
-    .ba-box li { font-size: 0.62em; line-height: 1.5; margin-bottom: 4px; }
-    .ba-arrow {
+    .pill.accent { background: var(--accent-tint); color: var(--accent-2); border-color: transparent; }
+    .pill.dark { background: var(--ink); color: white; border-color: var(--ink); }
+    .pill.success { background: #ecfdf5; color: #047857; border-color: transparent; }
+    .pill.muted { background: var(--bg-tint); border-color: transparent; color: var(--ink-4); }
+
+    /* ==================== Code block (terminal style) ==================== */
+    .terminal {
+      background: var(--code-bg);
+      border-radius: 6px;
+      padding: 22px 26px;
+      font-family: var(--font-mono);
+      font-size: 0.55em;
+      line-height: 1.7;
+      color: var(--code-fg);
+    }
+    .terminal .comment { color: var(--code-comment); font-style: italic; }
+    .terminal .keyword { color: var(--code-keyword); font-weight: 600; }
+    .terminal .string { color: var(--code-string); }
+    .terminal .number { color: var(--code-number); }
+    .terminal .success { color: var(--code-success); }
+    .terminal .header { color: var(--accent); font-weight: 600; }
+    .terminal .indent { padding-left: 16px; color: rgba(230, 230, 230, 0.7); }
+    .terminal .err { color: #f85149; font-weight: 600; }
+    .terminal .ok { color: var(--code-success); font-weight: 600; }
+
+    /* ==================== HTTP demo ==================== */
+    .http {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 22px 26px;
+      font-family: var(--font-mono);
+      font-size: 0.55em;
+      line-height: 1.7;
+    }
+    .http .req-method { color: var(--code-string); font-weight: 700; }
+    .http .res-fail { color: #d92f2f; font-weight: 700; }
+    .http .res-ok { color: #047857; font-weight: 700; }
+    .http .indent { padding-left: 22px; color: var(--ink-3); }
+    .http .h-key { color: var(--accent-2); font-weight: 600; }
+    .http .comment { color: var(--ink-4); font-style: italic; }
+    .http hr { border: none; border-top: 1px solid var(--line); margin: 8px 0; }
+
+    /* ==================== Tree (object hierarchy) ==================== */
+    .tree { display: flex; flex-direction: column; gap: 6px; }
+    .tree-row {
+      display: grid;
+      grid-template-columns: 32px 1fr 90px;
+      gap: 14px;
+      align-items: center;
+      padding: 5px 4px;
+      border-bottom: 1px solid var(--line);
+    }
+    .tree-row .label .desc { line-height: 1.4; }
+    .tree-row:last-child { border-bottom: none; }
+    .tree-row .idx {
+      font-family: var(--font-mono);
+      font-size: 0.7em;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+    }
+    .tree-row .label {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.78em;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .tree-row .label .desc {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 0.85em;
+      color: var(--ink-3);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .tree-row .tag {
+      font-size: 0.5em;
+      color: var(--ink-4);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: right;
+    }
+
+    /* ==================== Pipeline ==================== */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0;
+      align-items: stretch;
+    }
+    .pipeline .step {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 14px 8px;
+      text-align: center;
+      font-size: 0.55em;
+    }
+    .pipeline .step .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .pipeline .step .step-label {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 1.1em;
+      margin-bottom: 4px;
+    }
+    .pipeline .step .step-sub {
+      color: var(--ink-4);
+      font-size: 0.85em;
+      line-height: 1.4;
+    }
+    .pipeline .step.payment { border-color: #f59e0b; }
+    .pipeline .step.payment .step-num { color: #d97706; }
+    .pipeline .step.success { border-color: #10b981; }
+    .pipeline .step.success .step-num { color: #047857; }
+    .pipeline .arrow {
       display: flex; align-items: center; justify-content: center;
-      color: var(--accent); font-size: 1.6em; font-weight: 800;
+      color: var(--ink-4); font-family: var(--font-mono); font-size: 0.9em;
     }
+
+    /* ==================== Comparison table ==================== */
+    table.refined {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.65em;
+    }
+    table.refined th, table.refined td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    table.refined th {
+      color: var(--ink-4);
+      font-weight: 600;
+      font-size: 0.85em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--ink);
+      font-family: var(--font-mono);
+    }
+    table.refined tr:last-child td { border-bottom: none; }
+
+    /* ==================== Asset link ==================== */
+    .resource {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+    .resource:last-child { border-bottom: none; }
+    .resource .idx {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .resource .text .name {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 0.7em;
+      letter-spacing: -0.01em;
+    }
+    .resource .text .desc {
+      color: var(--ink-3);
+      font-size: 0.6em;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* ==================== Result box ==================== */
+    .result {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      padding: 18px 22px;
+    }
+    .result .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+    }
+    .result .row + .row { border-top: 1px dashed var(--line); }
+    .result .lbl {
+      color: var(--ink-3);
+      font-size: 0.6em;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+    .result .val {
+      color: var(--ink);
+      font-size: 0.7em;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .result .val.up { color: #047857; }
+    .result .val.down { color: #d92f2f; }
+
+    /* ==================== Solidity highlight ==================== */
+    .sol {
+      color: var(--code-fg);
+      font-family: var(--font-mono);
+      font-size: 0.7em;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .sol .kw { color: var(--code-keyword); }
+    .sol .ty { color: var(--code-number); }
+    .sol .com { color: var(--code-comment); font-style: italic; }
+    .sol .id { color: #d2a8ff; }
+
+    /* ==================== Quote ==================== */
+    .quote {
+      font-family: var(--font-display);
+      font-size: 0.95em;
+      color: var(--ink-2);
+      line-height: 1.55;
+      padding-left: 24px;
+      border-left: 2px solid var(--accent);
+      font-weight: 400;
+    }
+
+    /* ==================== Marquee number ==================== */
+    .big-stat {
+      font-family: var(--font-mono);
+      font-size: 5em;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .big-stat .accent { color: var(--accent); }
+    .big-stat-label {
+      font-size: 0.6em;
+      color: var(--ink-3);
+      margin-top: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==================== Highlight underline ==================== */
+    .underline-accent {
+      background: linear-gradient(transparent 65%, rgba(255, 107, 53, 0.25) 65%);
+      padding: 0 2px;
+    }
+
+    /* ==================== Title divider line ==================== */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 24px;
+    }
+
   </style>
 </head>
 <body>
@@ -405,233 +658,243 @@
 <div class="slides">
 
 <!-- =================================================================== -->
-<!-- ACT 1: HOOK -->
+<!-- Slide 01 — COVER -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 1: Title -->
-<section class="title-slide" data-background-color="#fafbfc">
-  <div class="logo-row">
-    <span class="lbl">AWS BEDROCK</span>
-    <span class="logo-dot"></span>
-    <span class="lbl">AGENTCORE</span>
-    <span class="logo-dot"></span>
-    <span class="lbl">PAYMENTS</span>
+<section class="cover" data-background-color="#ffffff">
+  <div class="top-meta">
+    <span>AWS BEDROCK</span>
+    <span class="dot"></span>
+    <span>AGENTCORE</span>
+    <span class="dot"></span>
+    <span>PAYMENTS</span>
   </div>
-  <h1>让 AI Agent <span class="accent">自己付钱</span></h1>
-  <div class="sub">Amazon Bedrock AgentCore Payments × x402 协议<br>从零跑通的端到端方案与商业价值</div>
-  <div class="badges">
-    <span class="badge b1">PREVIEW</span>
-    <span class="badge b2">TESTNET DEMO</span>
-    <span class="badge b3">2026</span>
+  <div class="main">
+    <div class="divider"></div>
+    <h1>让 AI Agent<br>自己 <span class="accent">付钱</span>。</h1>
+    <p class="sub">Amazon Bedrock AgentCore Payments 与 x402 协议<br>从机器对机器的支付握手，到生产级的代理经济基础设施。</p>
   </div>
-  <div class="meta">aws-samples · IanLiYi1996 fork</div>
+  <div class="bottom-row">
+    <div class="badges">
+      <span class="badge primary">PREVIEW</span>
+      <span class="badge">2026</span>
+    </div>
+    <div>AWS · INTERNAL</div>
+  </div>
 </section>
 
-<!-- SLIDE 2: The hook scene -->
-<section class="story" data-background-color="#fafbfc">
-  <div class="hook">
-    现在你的 AI Agent 已经能<strong>规划行程</strong>、<br>
-    <strong>分析报告</strong>、<strong>调用 100+ 工具</strong>。<br><br>
-    但当它要替你<strong class="accent">买</strong> 一份付费报告时——
+<!-- =================================================================== -->
+<!-- Slide 02 — STORY: Hook -->
+<!-- =================================================================== -->
+<section class="story" data-background-color="#ffffff">
+  <span class="watermark">02 / 33 · <span class="accent">SCENE</span></span>
+  <div class="lede">
+    现在你的 Agent 已经能<strong>规划行程</strong>、<br>
+    <strong>分析报告</strong>、<strong>调用百余种工具</strong>。
+  </div>
+  <div class="lede" style="margin-top: 28px; color: var(--ink-3);">
+    但当它要替你 <span class="accent">买</span> 一份付费报告时——
   </div>
   <div class="punch">它停下来等你。</div>
 </section>
 
-<!-- SLIDE 3: Specific scenario -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Scene</span>
-  <h2>一个典型场景</h2>
-  <div class="cols" style="margin-top: 14px;">
-    <div>
-      <div class="callout">
-        <p>👤 用户：<br><strong style="font-size:1.1em;">"帮我查一下这个月行业的市场分析报告。"</strong></p>
-      </div>
-      <p style="font-size: 0.8em; margin-top: 14px;">Agent 工作流：</p>
-      <ul style="font-size: 0.72em; margin-top: 6px;">
-        <li>✓ 搜索 → 找到 5 篇候选</li>
-        <li>✓ 评估 → 选中最相关的 1 篇</li>
-        <li>✓ 准备购买</li>
-        <li style="color: var(--red);">✗ <strong>停下，等待人工授权</strong></li>
-      </ul>
+<!-- =================================================================== -->
+<!-- Slide 03 — Why does it stop -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">03 / 33 · <span class="accent">PROBLEM</span></span>
+  <span class="kicker">Why it stops</span>
+  <h2>四个根本性的不匹配</h2>
+  <p style="color: var(--ink-3); max-width: 720px; margin-bottom: 36px;">
+    现有支付基础设施——信用卡、对公汇款、月度订阅——都是为<strong>人类采购</strong>设计的。
+    Agent 的几个特征跟它根本对不上。
+  </p>
+  <div class="grid-4">
+    <div class="card">
+      <span class="num">01</span>
+      <h3 class="title" style="margin-top: 0;">没法动态注册</h3>
+      <p class="body">每个供应商都要 KYC、绑卡、邮箱验证，Agent 跑不过</p>
     </div>
-    <div>
-      <h3>为什么必须停？</h3>
-      <div class="card danger" style="margin-bottom: 6px;">
-        <div class="title">没法动态注册账号</div>
-        <div class="body">每个供应商都要 KYC、绑卡、邮箱验证</div>
-      </div>
-      <div class="card danger" style="margin-bottom: 6px;">
-        <div class="title">$0.002 的微支付不经济</div>
-        <div class="body">传统卡组织的最低交易费比金额还大</div>
-      </div>
-      <div class="card danger" style="margin-bottom: 6px;">
-        <div class="title">月结 vs 实时</div>
-        <div class="body">Agent 要在每次请求粒度结清，不是月结</div>
-      </div>
-      <div class="card danger">
-        <div class="title">供应方不愿建账户体系</div>
-        <div class="body">为 agent 单独搭一套用户系统 = 巨大成本</div>
-      </div>
+    <div class="card">
+      <span class="num">02</span>
+      <h3 class="title" style="margin-top: 0;">微支付不经济</h3>
+      <p class="body">$0.002 的金额，传统卡组织最低交易费比它还大</p>
+    </div>
+    <div class="card">
+      <span class="num">03</span>
+      <h3 class="title" style="margin-top: 0;">月结 vs 实时</h3>
+      <p class="body">Agent 要在每次请求粒度结清，不是月度对账</p>
+    </div>
+    <div class="card">
+      <span class="num">04</span>
+      <h3 class="title" style="margin-top: 0;">供应方不愿建系统</h3>
+      <p class="body">为机器单独搭账户体系 = 巨大的开发成本</p>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 4: This is not edge case -->
-<section class="story" data-background-color="#fafbfc">
-  <div class="hook">
+<!-- =================================================================== -->
+<!-- Slide 04 — STORY: not edge case -->
+<!-- =================================================================== -->
+<section class="story" data-background-color="#ffffff">
+  <span class="watermark">04 / 33 · <span class="accent">INSIGHT</span></span>
+  <div class="lede">
     这不是个例。<br><br>
-    Agent 的<strong class="accent">自主性</strong>，<br>
+    Agent 的 <span class="accent">自主性</span>，<br>
     在"付款"这一环被切断。
   </div>
-  <p class="small muted" style="max-width: 700px; margin-top: 30px; line-height: 1.6;">
-    传统支付基础设施——信用卡、对公汇款、月度订阅——都是为<strong>人类采购</strong>设计的。<br>
-    它的最低交易费、账户开通时间、合同签订流程都<strong>无法被机器吞下</strong>。<br>
-    结果：Agent 要么等人批，要么被绑死在订阅制里。
+  <p class="footnote">
+    结果：要么等人批，要么被绑死在订阅制里。<br>
+    Agent 经济从"能分析、能建议"到"能自主完成任务"的最后一公里 —— 卡在这里。
   </p>
 </section>
 
-<!-- SLIDE 5: 4 specific demands -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Requirements</span>
-  <h2>Agent 经济需要的支付，有四个具体诉求</h2>
-  <div class="cols-4" style="margin-top: 14px; gap: 12px;">
-    <div class="card accent">
-      <div class="title" style="font-size: 0.85em;">金额可以小</div>
-      <div class="body">几美分甚至几厘，不被最低交易费吃掉</div>
+<!-- =================================================================== -->
+<!-- Slide 05 — 4 demands -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">05 / 33 · <span class="accent">REQUIREMENTS</span></span>
+  <span class="kicker">What we actually need</span>
+  <h2>Agent 经济需要的支付，<br>有四个具体诉求</h2>
+  <div class="grid-4" style="margin-top: 36px;">
+    <div>
+      <div class="big-stat" style="font-size: 3.2em;"><span class="accent">¢</span></div>
+      <div class="big-stat-label" style="margin-top: 8px;"><strong style="color: var(--ink);">金额可以小</strong><br>不被最低交易费吃掉</div>
     </div>
-    <div class="card accent">
-      <div class="title" style="font-size: 0.85em;">一次交互完成</div>
-      <div class="body">不需要事先注册账号或交换 API key</div>
+    <div>
+      <div class="big-stat" style="font-size: 3.2em;"><span class="accent">1×</span></div>
+      <div class="big-stat-label" style="margin-top: 8px;"><strong style="color: var(--ink);">一次交互完成</strong><br>无需注册、无需 API key</div>
     </div>
-    <div class="card accent">
-      <div class="title" style="font-size: 0.85em;">钱包能管</div>
-      <div class="body">代理能安全使用，组织能管住（预算、时间窗）</div>
+    <div>
+      <div class="big-stat" style="font-size: 3.2em;"><span class="accent">$</span></div>
+      <div class="big-stat-label" style="margin-top: 8px;"><strong style="color: var(--ink);">钱包能管</strong><br>预算、时间窗、审计可控</div>
     </div>
-    <div class="card accent">
-      <div class="title" style="font-size: 0.85em;">决策可追溯</div>
-      <div class="body">事后能讲清楚每一笔花了什么钱</div>
-    </div>
-  </div>
-  <p class="small" style="margin-top: 18px;">这四项诉求，对应三件事配合起来解决：</p>
-  <div class="cols-3" style="margin-top: 8px; gap: 10px;">
-    <div class="card secondary">
-      <div class="title" style="font-size: 0.78em;">① 支付协议</div>
-      <div class="body">机器之间可编程的支付握手 → <strong>x402</strong></div>
-    </div>
-    <div class="card secondary">
-      <div class="title" style="font-size: 0.78em;">② 托管钱包</div>
-      <div class="body">代理能安全使用 → <strong>AgentCore Payments</strong></div>
-    </div>
-    <div class="card secondary">
-      <div class="title" style="font-size: 0.78em;">③ 卖方基础设施</div>
-      <div class="body">低成本挂价和验签 → <strong>CloudFront + Lambda@Edge</strong></div>
+    <div>
+      <div class="big-stat" style="font-size: 3.2em;"><span class="accent">↗</span></div>
+      <div class="big-stat-label" style="margin-top: 8px;"><strong style="color: var(--ink);">决策可追溯</strong><br>每一笔都能讲清楚</div>
     </div>
   </div>
+  <p style="margin-top: 60px; font-size: 0.7em; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 24px;">
+    这四项诉求，对应三件事配合解决——<strong>支付协议</strong>（x402）、<strong>托管钱包</strong>（AgentCore Payments）、<strong>卖方基础设施</strong>（CloudFront + Lambda@Edge）。
+  </p>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 2: WHY THE OLD WORLD FAILS -->
+<!-- Slide 06 — SECTION 01 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 6: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 01</div>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">01</div>
+  <div class="label">PART ONE</div>
   <h1>"如果硬上"<br>会发生什么</h1>
-  <p class="quote">
-    如果一个团队直接让 Agent 裸用 x402，通常会在四个地方停下来自己造轮子。
+  <p class="desc">
+    x402 规定了"<strong>怎么谈支付</strong>"，但没有规定组织内部"<strong>怎么安全执行</strong>"。<br>
+    后者，是 AgentCore Payments 要处理的问题。
   </p>
 </section>
 
-<!-- SLIDE 7: 4 wheels -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 07 — 4 wheels -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">07 / 33 · <span class="accent">DIY COST</span></span>
+  <span class="kicker">Four wheels you must reinvent</span>
   <h2>四件你必须自己造的轮子</h2>
-  <p class="small">x402 规定了"怎么谈支付"，但没有规定组织内部"怎么安全执行"。后者是 AgentCore Payments 的事。</p>
-  <div class="cols-4" style="margin-top: 14px; gap: 12px;">
-    <div class="card amber">
-      <div class="title">钱包密钥放哪里</div>
-      <div class="body">容器、Lambda、Pod 里不能裸放私钥。<br>KMS / HSM / 自建托管都得走完整生命周期、灾备、合规评审。</div>
+  <div class="grid-2" style="margin-top: 20px;">
+    <div>
+      <div class="card" style="margin-bottom: 10px; padding: 14px 18px;">
+        <span class="num">A</span>
+        <h3 class="title" style="margin-top: 0;">钱包密钥放哪里</h3>
+        <p class="body">容器 / Lambda / Pod 不能裸放私钥 · KMS / HSM / 自建托管要走完整生命周期、灾备、合规评审</p>
+      </div>
+      <div class="card" style="padding: 14px 18px;">
+        <span class="num">B</span>
+        <h3 class="title" style="margin-top: 0;">支出怎么硬约束</h3>
+        <p class="body">写 prompt 里的预算 prompt injection 几行就绕过 · 真正的边界必须由<strong>服务端</strong>强制</p>
+      </div>
     </div>
-    <div class="card amber">
-      <div class="title">支出怎么硬约束</div>
-      <div class="body">"每次最多 1 USDC"写在 prompt 里，prompt injection 几行就绕过。<br>真正的预算边界必须由<strong>服务端</strong>强制。</div>
-    </div>
-    <div class="card amber">
-      <div class="title">身份链怎么接</div>
-      <div class="body">Agent 不是人，传统以用户为中心的 IAM 套不上去。<br>需要可审计、可撤销、最小权限的代理身份机制。</div>
-    </div>
-    <div class="card amber">
-      <div class="title">审计证据怎么留</div>
-      <div class="body">日志分散在容器、网关、链上不同位置，<br>事后拼凑很难得到完整链路。</div>
+    <div>
+      <div class="card" style="margin-bottom: 10px; padding: 14px 18px;">
+        <span class="num">C</span>
+        <h3 class="title" style="margin-top: 0;">身份链怎么接</h3>
+        <p class="body">Agent 不是人，传统以用户为中心的 IAM 套不上去 · 需要可审计、可撤销、最小权限的代理身份</p>
+      </div>
+      <div class="card" style="padding: 14px 18px;">
+        <span class="num">D</span>
+        <h3 class="title" style="margin-top: 0;">审计证据怎么留</h3>
+        <p class="body">日志分散在容器、网关、链上 · 事后拼凑很难得到完整链路</p>
+      </div>
     </div>
   </div>
-  <div class="callout" style="margin-top: 18px;">
-    <p style="font-size: 0.85em;">
-      <strong>这四件事每一件单独做都是一个工程项目</strong>，做齐需要花<strong style="color: var(--accent);">几个月、搭一支小团队</strong>。
+  <div style="margin-top: 16px; padding: 12px 20px; background: var(--bg-tint); border-left: 3px solid var(--accent);">
+    <p style="font-size: 0.7em; margin: 0; color: var(--ink);">
+      每件单独做都是一个工程项目 · 做齐需要 <strong>3-6 个月</strong> + 一支<strong>小团队</strong>
     </p>
   </div>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 3: NEW SOLUTION -->
+<!-- Slide 08 — SECTION 02 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 8: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 02</div>
-  <h1>新方案的两块拼图</h1>
-  <p class="quote">x402 协议 + Amazon Bedrock AgentCore Payments</p>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">02</div>
+  <div class="label">PART TWO</div>
+  <h1>新方案的<br>两块拼图</h1>
+  <p class="desc">x402 协议 + Amazon Bedrock AgentCore Payments<br>分别解决"怎么谈"和"怎么安全执行"。</p>
 </section>
 
-<!-- SLIDE 9: x402 protocol -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Piece 1 · Protocol</span>
-  <h2>x402:<span style="color: var(--muted); font-weight: 400;"> 复活一个 26 年前的 HTTP 状态码</span></h2>
-  <p style="font-size: 0.74em;">
-    HTTP 1999 年保留了 <strong style="color: var(--accent); font-family: 'SF Mono', monospace;">402 Payment Required</strong>，几乎没人用过。Coinbase 2024 发布 x402，把支付塞进 HTTP 本身——<strong>一次交互内</strong>完成。
+<!-- =================================================================== -->
+<!-- Slide 09 — x402 protocol -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">09 / 33 · <span class="accent">PIECE 1</span></span>
+  <span class="kicker">Protocol</span>
+  <h2>x402 — 复活一个 26 年前的 HTTP 状态码</h2>
+  <p style="color: var(--ink-3); max-width: 880px; margin-bottom: 18px; font-size: 0.65em;">
+    HTTP 1999 年保留了 <code>402 Payment Required</code>，几乎没人用过。Coinbase 2024 发布 x402，<strong>把支付塞进 HTTP 本身</strong>——一次交互内完成。
   </p>
-  <div class="http-demo" style="margin-top: 8px;">
+  <div class="http" style="font-size: 0.5em; padding: 18px 22px;">
     <div><span class="comment"># Step 1+2: client tries → server demands payment</span></div>
-    <div><span class="req">GET</span> /api/article</div>
-    <div><span class="res-402">HTTP/1.1 402 Payment Required</span></div>
-    <div class="ind">{ accepts: [{ amount: <span class="h-key">"1000"</span>, payTo: <span class="h-key">"0xF72b..."</span>, asset: <span class="h-key">USDC</span> }] }</div>
-    <br>
+    <div><span class="req-method">GET</span> /api/article</div>
+    <div><span class="res-fail">HTTP/1.1 402 Payment Required</span></div>
+    <div class="indent">{ accepts: [{ amount: <span class="h-key">"1000"</span>, payTo: <span class="h-key">"0xF72b..."</span>, asset: <span class="h-key">USDC</span> }] }</div>
+    <hr>
     <div><span class="comment"># Step 3+4: signs EIP-3009 → retries → server settles → 200</span></div>
-    <div><span class="req">GET</span> /api/article</div>
-    <div class="ind"><span class="h-key">X-PAYMENT</span>: &lt;base64(signature)&gt;</div>
-    <div><span class="res-200">HTTP/1.1 200 OK</span> + content</div>
-    <div class="ind"><span class="h-key">X-PAYMENT-RESPONSE</span>: &lt;tx hash&gt;</div>
+    <div><span class="req-method">GET</span> /api/article</div>
+    <div class="indent"><span class="h-key">X-PAYMENT</span>: &lt;base64(signature)&gt;</div>
+    <div><span class="res-ok">HTTP/1.1 200 OK</span> + content</div>
+    <div class="indent"><span class="h-key">X-PAYMENT-RESPONSE</span>: &lt;tx hash&gt;</div>
   </div>
-  <p class="small muted center" style="margin-top: 8px;">
+  <p style="font-size: 0.55em; color: var(--ink-4); margin-top: 18px; letter-spacing: 0.02em;">
     无账号 · 无 API key · 每次请求当场结清 · USDC on Base ≈ 200 ms · gas ≈ $0.0001
   </p>
 </section>
 
-<!-- SLIDE 10: EIP-3009 building block -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Building Block</span>
-  <h2>关键拼图：EIP-3009 — payer 只签名，不上链</h2>
-  <div class="cols" style="margin-top: 8px;">
+<!-- =================================================================== -->
+<!-- Slide 10 — EIP-3009 -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">10 / 33 · <span class="accent">BUILDING BLOCK</span></span>
+  <span class="kicker">EIP-3009</span>
+  <h2>Payer 只签名，不上链</h2>
+  <div class="grid-2" style="margin-top: 24px;">
     <div>
-      <h3>核心机制</h3>
-      <div class="card secondary" style="margin-bottom: 6px;">
-        <div class="title">离线签名</div>
-        <div class="body">payer 用私钥对类型化数据签 EIP-712，得到 (v, r, s)</div>
+      <div class="stat">
+        <h3 style="margin-bottom: 8px;">离线签名</h3>
+        <p class="body" style="font-size: 0.72em; color: var(--ink-3);">payer 用私钥对类型化数据签 EIP-712，得到 (v, r, s)。</p>
       </div>
-      <div class="card secondary" style="margin-bottom: 6px;">
-        <div class="title">谁调谁付 gas</div>
-        <div class="body">facilitator 拿签名上链 → USDC 自动扣 from → 转 to</div>
+      <div class="stat">
+        <h3 style="margin-bottom: 8px;">谁调谁付 gas</h3>
+        <p class="body" style="font-size: 0.72em; color: var(--ink-3);">facilitator 拿签名上链 → USDC 自动扣 from → 转 to。Agent 不需要 ETH。</p>
       </div>
-      <div class="card secondary">
-        <div class="title">nonce + 时间窗</div>
-        <div class="body">每个签名只能用一次，过期自动作废</div>
+      <div class="stat">
+        <h3 style="margin-bottom: 8px;">nonce + 时间窗</h3>
+        <p class="body" style="font-size: 0.72em; color: var(--ink-3);">每个签名只能用一次，过期自动作废。</p>
       </div>
     </div>
     <div>
-      <h3>合约函数签名</h3>
-      <div style="background: var(--code-bg); border-radius: 10px; padding: 14px 18px; box-shadow: var(--shadow-md);">
-<pre class="sol" style="margin: 0; padding: 0;"><span class="kw">function</span> <span class="id">transferWithAuthorization</span>(
-  <span class="ty">address</span> from,        <span class="com">// payer</span>
-  <span class="ty">address</span> to,          <span class="com">// seller</span>
+      <div style="background: var(--code-bg); border-radius: 6px; padding: 22px 26px;">
+<pre class="sol"><span class="kw">function</span> <span class="id">transferWithAuthorization</span>(
+  <span class="ty">address</span> from,
+  <span class="ty">address</span> to,
   <span class="ty">uint256</span> value,
   <span class="ty">uint256</span> validAfter,
   <span class="ty">uint256</span> validBefore,
@@ -639,387 +902,434 @@
   <span class="ty">uint8</span> v, <span class="ty">bytes32</span> r, <span class="ty">bytes32</span> s
 ) <span class="kw">external</span></pre>
       </div>
-      <p class="small" style="margin-top: 10px;">
-        付款像发 email 一样：<strong>签一张授权单，由 seller 兑付</strong>。Agent 不用管 gas、不用等 mining。
+      <p style="font-size: 0.65em; margin-top: 22px; color: var(--ink-2); line-height: 1.55;">
+        付款像发 email：<strong>签一张授权单</strong>，由 seller 兑付。
       </p>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 11: AgentCore Payments overview -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Piece 2 · Managed Service</span>
+<!-- =================================================================== -->
+<!-- Slide 11 — AgentCore Payments overview -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">11 / 33 · <span class="accent">PIECE 2</span></span>
+  <span class="kicker">Managed Service</span>
   <h2>Amazon Bedrock AgentCore Payments</h2>
-  <div class="callout">
-    <p style="font-size: 0.85em; line-height: 1.5;">
-      AWS 在 <strong>2026 年 5 月</strong>推出的 Bedrock AgentCore 子服务：把<strong>钱包托管</strong>、<strong>支付执行</strong>、<strong>预算管控</strong>、<strong>审计追溯</strong>四件事打包成一项托管服务，原生支持 x402。
-      <strong style="color: var(--accent);">从"代理能谈支付"到"代理能投产付费"——数月压缩到数天。</strong>
-    </p>
+  <p style="color: var(--ink-3); max-width: 820px; margin-bottom: 32px; font-size: 0.78em; line-height: 1.6;">
+    AWS 在 <strong>2026 年 5 月</strong>推出的 Bedrock AgentCore 子服务。
+    把<strong>钱包托管</strong>、<strong>支付执行</strong>、<strong>预算管控</strong>、<strong>审计追溯</strong>四件事打包成一项托管服务，原生支持 x402。
+  </p>
+  <div class="grid-4">
+    <div>
+      <span class="pill accent" style="margin-bottom: 12px;">01</span>
+      <h3 style="margin: 0 0 6px;">托管钱包</h3>
+      <p style="font-size: 0.62em; color: var(--ink-3); line-height: 1.55; margin: 0;">代理获得范围受限的嵌入式钱包，开发者不处理私钥</p>
+    </div>
+    <div>
+      <span class="pill accent" style="margin-bottom: 12px;">02</span>
+      <h3 style="margin: 0 0 6px;">原生 x402 执行</h3>
+      <p style="font-size: 0.62em; color: var(--ink-3); line-height: 1.55; margin: 0;">服务端评估条款 → 签发 USDC → 重试，代理不写签名</p>
+    </div>
+    <div>
+      <span class="pill accent" style="margin-bottom: 12px;">03</span>
+      <h3 style="margin: 0 0 6px;">Policy 支出治理</h3>
+      <p style="font-size: 0.62em; color: var(--ink-3); line-height: 1.55; margin: 0;">财务/合规设上限，<strong>服务端强制</strong>，prompt 绕不过</p>
+    </div>
+    <div>
+      <span class="pill accent" style="margin-bottom: 12px;">04</span>
+      <h3 style="margin: 0 0 6px;">统一审计</h3>
+      <p style="font-size: 0.62em; color: var(--ink-3); line-height: 1.55; margin: 0;">代理身份 / 钱包 / 签名 / tx hash 完整链路</p>
+    </div>
   </div>
-  <div class="cols-4" style="margin-top: 14px;">
-    <div class="card accent">
-      <div class="title">托管钱包</div>
-      <div class="body">代理获得范围受限的嵌入式钱包，开发者不处理私钥</div>
-    </div>
-    <div class="card secondary">
-      <div class="title">原生 x402 执行</div>
-      <div class="body">服务端评估条款 → 签发 USDC → 重试，代理不写签名</div>
-    </div>
-    <div class="card success">
-      <div class="title">Policy 支出治理</div>
-      <div class="body">财务/合规团队设上限，<strong>服务端强制</strong>，prompt 绕不过</div>
-    </div>
-    <div class="card amber">
-      <div class="title">统一审计</div>
-      <div class="body">代理身份 / 钱包 / 签名 / tx hash 形成完整问责链路</div>
-    </div>
+  <div style="margin-top: 40px; padding: 20px 24px; background: var(--ink); color: white; border-radius: 4px;">
+    <p style="font-size: 0.85em; margin: 0; line-height: 1.5; color: rgba(255,255,255,0.95);">
+      "代理能投产付费"的工作量 — 从 <span style="color: var(--accent); font-weight: 700;">数月</span> 压缩到 <span style="color: var(--accent); font-weight: 700;">数天</span>。
+    </p>
   </div>
 </section>
 
-<!-- SLIDE 12: AgentCore family context -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 12 — AgentCore family -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">12 / 33 · <span class="accent">FAMILY</span></span>
+  <span class="kicker">Where it sits</span>
   <h2>它在 AgentCore 家族里的位置</h2>
-  <p class="small">Amazon Bedrock AgentCore 是 AWS 为<strong>生产级 AI 代理</strong>提供的托管基础设施套件。</p>
-  <div class="cols-3" style="margin-top: 14px;">
-    <div class="card secondary">
-      <div class="title">Runtime</div>
-      <div class="body">代理容器运行时，自动伸缩</div>
+  <p style="color: var(--ink-3); margin-bottom: 36px; font-size: 0.72em;">
+    Amazon Bedrock AgentCore 是为<strong>生产级 AI 代理</strong>提供的托管基础设施套件。
+  </p>
+  <div class="grid-3">
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 6px;">Runtime</h3>
+      <p class="body">代理容器运行时，自动伸缩</p>
     </div>
-    <div class="card secondary">
-      <div class="title">Gateway</div>
-      <div class="body">面向外部工具和 MCP server 的 API 网关</div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 6px;">Gateway</h3>
+      <p class="body">面向外部工具与 MCP server 的 API 网关</p>
     </div>
-    <div class="card secondary">
-      <div class="title">Identity</div>
-      <div class="body">工作负载身份与凭证管理</div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 6px;">Identity</h3>
+      <p class="body">工作负载身份与凭证管理</p>
     </div>
-    <div class="card secondary">
-      <div class="title">Memory</div>
-      <div class="body">多轮会话记忆</div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 6px;">Memory</h3>
+      <p class="body">多轮会话记忆</p>
     </div>
-    <div class="card secondary">
-      <div class="title">Observability</div>
-      <div class="body">追踪、日志、指标</div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 6px;">Observability</h3>
+      <p class="body">追踪、日志、指标</p>
     </div>
-    <div class="card accent" style="border-left: 4px solid var(--accent);">
-      <div class="title" style="color: var(--accent-dark);">Payments （NEW）</div>
-      <div class="body">代理支付：钱包 + 预算 + 审计</div>
+    <div class="card dark">
+      <span class="pill" style="background: var(--accent); color: white; border: none; margin-bottom: 8px;">NEW</span>
+      <h3 class="title" style="margin: 0 0 6px; color: white;">Payments</h3>
+      <p class="body">代理支付：钱包 + 预算 + 审计</p>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 22px;">
+  <p style="text-align: center; margin-top: 36px; color: var(--ink-3); font-size: 0.62em; max-width: 720px; margin-left: auto; margin-right: auto;">
     共同思路：把基础设施侧的重复劳动做成<strong>托管服务</strong>，让开发者聚焦在代理的<strong>业务逻辑</strong>上。
   </p>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 4: HOW IT WORKS -->
+<!-- Slide 13 — SECTION 03 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 13: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 03</div>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">03</div>
+  <div class="label">PART THREE</div>
   <h1>核心对象模型</h1>
   <p class="desc">5 个对象 · 分两期使用 · 三层变化频率</p>
 </section>
 
-<!-- SLIDE 14: 5 objects (compact) -->
-<section data-background-color="#fafbfc">
-  <h2>核心对象模型 — 5 个对象</h2>
-  <p class="small">分两期使用：① ② 一次性配置（安装期）· ③ ④ ⑤ 每次支付都用到（运行期）</p>
-  <div class="tree" style="margin-top: 6px;">
-    <div class="obj l1">
-      <div class="icon">1</div>
-      <div>
-        <span class="name">PaymentCredentialProvider</span>
+<!-- =================================================================== -->
+<!-- Slide 14 — 5 objects -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">14 / 33 · <span class="accent">OBJECT MODEL</span></span>
+  <span class="kicker">5 objects</span>
+  <h2>核心对象模型</h2>
+  <p style="color: var(--ink-3); margin-bottom: 24px; font-size: 0.7em;">
+    分两期使用：<span class="pill muted">① ②</span> 一次性配置 · <span class="pill muted">③ ④ ⑤</span> 每次支付都用到
+  </p>
+  <div class="tree">
+    <div class="tree-row">
+      <div class="idx">①</div>
+      <div class="label">PaymentCredentialProvider
         <div class="desc">存放钱包凭证 → AWS Secrets Manager · 通过 ARN 引用</div>
       </div>
       <div class="tag">install</div>
     </div>
-    <div class="obj l2">
-      <div class="icon">2</div>
-      <div>
-        <span class="name">PaymentConnector</span>
-        <div class="desc">钱包后端适配器 · CoinbaseCDP / StripePrivy · 创建 Manager 时焊死</div>
+    <div class="tree-row">
+      <div class="idx">②</div>
+      <div class="label">PaymentConnector
+        <div class="desc">钱包后端适配器 · CoinbaseCDP / StripePrivy · 焊死进 Manager</div>
       </div>
       <div class="tag">install</div>
     </div>
-    <div class="obj l3">
-      <div class="icon">3</div>
-      <div>
-        <span class="name">PaymentManager</span>
+    <div class="tree-row">
+      <div class="idx">③</div>
+      <div class="label">PaymentManager
         <div class="desc">账务<strong>根节点</strong> · 授权器配置 + 运行时 IAM 角色</div>
       </div>
       <div class="tag">runtime</div>
     </div>
-    <div class="obj l4">
-      <div class="icon">4</div>
-      <div>
-        <span class="name">PaymentInstrument</span>
+    <div class="tree-row">
+      <div class="idx">④</div>
+      <div class="label">PaymentInstrument
         <div class="desc">钱包<strong>引用</strong>（非钱包本身）· 绑定一条链 · 私钥永远在 CDP/Privy</div>
       </div>
       <div class="tag">runtime</div>
     </div>
-    <div class="obj l5">
-      <div class="icon">5</div>
-      <div>
-        <span class="name">PaymentSession</span>
+    <div class="tree-row">
+      <div class="idx">⑤</div>
+      <div class="label">PaymentSession
         <div class="desc">支付上下文 · maxSpendAmount + 有效期 · 超额自动拒绝</div>
       </div>
       <div class="tag">runtime</div>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 8px;">
-    代理运行时只持有 <strong>3 个 ID</strong>（Manager ARN / Instrument ID / Session ID）— 看不到私钥
+  <p style="text-align: center; margin-top: 24px; font-size: 0.62em; color: var(--ink-3);">
+    代理运行时只持有 <strong style="color: var(--accent);">3 个 ID</strong>（Manager ARN / Instrument ID / Session ID）— 看不到私钥
   </p>
 </section>
 
-<!-- SLIDE 15: 3 layers of change -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 15 — 3 layers -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">15 / 33 · <span class="accent">LAYERED CHANGE</span></span>
+  <span class="kicker">Three layers of change</span>
   <h2>三层对象，对应三种变化频率</h2>
-  <p class="small">这就是为什么要分层：<strong>只改快的层，不动慢的层</strong>。</p>
-  <table class="comp" style="margin-top: 12px;">
+  <p style="color: var(--ink-3); font-size: 0.7em; margin-bottom: 28px;">
+    分层让你能<strong>只改快的层，不动慢的层</strong>。
+  </p>
+  <table class="refined">
     <thead>
-      <tr><th>对象</th><th>变化频率</th><th>谁来管</th><th>回答的问题</th></tr>
+      <tr>
+        <th style="width: 25%;">对象</th>
+        <th style="width: 18%;">变化频率</th>
+        <th style="width: 22%;">谁来管</th>
+        <th>回答的问题</th>
+      </tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>PaymentManager</strong></td>
-        <td><span class="pill green">低</span> 季度/年</td>
+        <td><span class="pill success">低</span> 季度 / 年</td>
         <td>财务与运维</td>
         <td>这笔钱是哪条业务线花的？谁来负责？</td>
       </tr>
       <tr>
         <td><strong>PaymentInstrument</strong></td>
-        <td><span class="pill orange">中</span> 月/季度</td>
+        <td><span class="pill accent">中</span> 月 / 季度</td>
         <td>财务与钱包管理员</td>
         <td>这笔钱从哪个钱包、哪条链出？</td>
       </tr>
       <tr>
         <td><strong>PaymentSession</strong></td>
-        <td><span class="pill red">高</span> 小时/次</td>
+        <td><span class="pill" style="background: #fee2e2; color: #991b1b; border-color: transparent;">高</span> 小时 / 次</td>
         <td>业务系统或编排逻辑</td>
         <td>这一次能花多少？能花多久？</td>
       </tr>
     </tbody>
   </table>
-  <div class="callout" style="margin-top: 14px;">
-    <p style="font-size: 0.78em;">
-      典型组合：<strong>1 个 Manager</strong>对应一条业务线 → 下挂 <strong>2-3 个 Instrument</strong>（不同链/币种）
-      → 每个 Instrument 下按支付场景开<strong>不同 Session</strong>（"单次 0.01 USDC" / "本次任务上限 1 USDC" / "当月累计 100 USDC"）。
-    </p>
-  </div>
+  <p style="margin-top: 28px; padding: 16px 22px; background: var(--bg-tint); border-radius: 4px; font-size: 0.65em; line-height: 1.6;">
+    典型组合：1 个 Manager（业务线）→ 2-3 个 Instrument（不同链/币种）→ 多个 Session（"单次 0.01 USDC" / "本次任务 1 USDC" / "当月 100 USDC"）
+  </p>
 </section>
 
-<!-- SLIDE 16: Separation of duties -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 16 — Separation of duties -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">16 / 33 · <span class="accent">SEPARATION OF DUTIES</span></span>
+  <span class="kicker">职责分离</span>
   <h2>分层带来的权限分离</h2>
-  <p class="small">对应传统金融合规里的<strong>职责分离（Separation of Duties）</strong>要求。</p>
-  <div class="cols" style="margin-top: 14px;">
-    <div class="card secondary">
-      <div class="title" style="font-size: 0.95em;">ManagementRole</div>
-      <div class="body" style="font-size: 0.7em; line-height: 1.55;">
-        <strong style="color: var(--green);">CAN</strong>: 创建 Manager / Instrument / Session<br>
-        <strong style="color: var(--red);">CANNOT</strong>: 调 ProcessPayment（显式 DENY）
-        <p style="margin-top: 8px; color: var(--muted);">"搭架构的人"</p>
-      </div>
+  <p style="color: var(--ink-3); font-size: 0.7em; margin-bottom: 28px;">
+    对应传统金融合规里的 <strong>Separation of Duties</strong> 要求。
+  </p>
+  <div class="grid-2">
+    <div class="card" style="border-left: 3px solid var(--ink);">
+      <h3 style="margin: 0 0 12px; font-size: 0.95em;">ManagementRole<br><span style="font-size: 0.6em; font-weight: 400; color: var(--ink-4);">"搭架构的人"</span></h3>
+      <table style="width: 100%; font-size: 0.6em; color: var(--ink-3);">
+        <tr><td style="padding: 4px 0;"><span style="color: #047857; font-weight: 700;">CAN</span></td><td>创建 Manager / Instrument / Session</td></tr>
+        <tr><td style="padding: 4px 0;"><span style="color: #d92f2f; font-weight: 700;">CANNOT</span></td><td>调 ProcessPayment（显式 DENY）</td></tr>
+      </table>
     </div>
-    <div class="card accent">
-      <div class="title" style="font-size: 0.95em;">ProcessPaymentRole</div>
-      <div class="body" style="font-size: 0.7em; line-height: 1.55;">
-        <strong style="color: var(--green);">CAN</strong>: 在 Session 预算内调 ProcessPayment<br>
-        <strong style="color: var(--red);">CANNOT</strong>: 创建 Session、改预算、换钱包
-        <p style="margin-top: 8px; color: var(--muted);">"花钱的人" — 代理拿到的就是这个</p>
-      </div>
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <h3 style="margin: 0 0 12px; font-size: 0.95em;">ProcessPaymentRole<br><span style="font-size: 0.6em; font-weight: 400; color: var(--ink-4);">"花钱的人" — 代理拿到的就是这个</span></h3>
+      <table style="width: 100%; font-size: 0.6em; color: var(--ink-3);">
+        <tr><td style="padding: 4px 0;"><span style="color: #047857; font-weight: 700;">CAN</span></td><td>在 Session 预算内调 ProcessPayment</td></tr>
+        <tr><td style="padding: 4px 0;"><span style="color: #d92f2f; font-weight: 700;">CANNOT</span></td><td>创建 Session、改预算、换钱包</td></tr>
+      </table>
     </div>
   </div>
-  <div class="callout amber" style="margin-top: 18px;">
-    <p style="font-size: 0.85em;">
-      <strong>关键设计</strong>：代理拿到的是最小权限集。<br>
-      即使被 prompt injection 攻破，能造成的<strong>最大损失也只是当前 Session 的 maxSpendAmount</strong>。
-    </p>
+  <div class="quote" style="margin-top: 36px; font-size: 0.78em;">
+    即使代理被 prompt injection 攻破，能造成的<strong>最大损失，也只是当前 Session 的 maxSpendAmount</strong>。
   </div>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 5: END-TO-END FLOW -->
+<!-- Slide 17 — SECTION 04 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 17: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 04</div>
-  <h1>一次完整请求 走完 11 步</h1>
-  <p class="quote">用户点 "Get" → Agent 拿回内容 → ~3 秒</p>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">04</div>
+  <div class="label">PART FOUR</div>
+  <h1>一次完整请求<br>走完 11 步</h1>
+  <p class="desc">用户点击 → Agent 拿回内容<br>端到端 ≈ <strong>3 秒</strong>。</p>
 </section>
 
-<!-- SLIDE 18: End-to-end pipeline -->
-<section data-background-color="#fafbfc">
-  <h2>端到端付款流程（~3 秒）</h2>
-  <p class="small">完整 11 步，分两个回合。</p>
-  <div class="pipeline" style="margin-top: 14px;">
-    <div class="node">
-      <div class="icon">U</div><div class="lbl">User</div><div class="sub">输入 prompt</div>
-    </div>
+<!-- =================================================================== -->
+<!-- Slide 18 — End-to-end pipeline -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">18 / 33 · <span class="accent">FLOW</span></span>
+  <span class="kicker">End-to-end</span>
+  <h2>端到端付款流程</h2>
+  <p style="color: var(--ink-3); margin-bottom: 28px; font-size: 0.7em;">
+    完整 11 步分两个回合：第一回合发现条款，第二回合带签名重试。
+  </p>
+  <div class="pipeline">
+    <div class="step"><div class="step-num">01</div><div class="step-label">User</div><div class="step-sub">输入 prompt</div></div>
     <div class="arrow">→</div>
-    <div class="node">
-      <div class="icon">A</div><div class="lbl">Agent</div><div class="sub">查 MCP 目录 + 评估</div>
-    </div>
+    <div class="step"><div class="step-num">02</div><div class="step-label">Agent</div><div class="step-sub">查 MCP 目录</div></div>
     <div class="arrow">→</div>
-    <div class="node payment">
-      <div class="icon">402</div><div class="lbl">CloudFront</div><div class="sub">返回 accepts</div>
-    </div>
+    <div class="step payment"><div class="step-num">03</div><div class="step-label">CloudFront</div><div class="step-sub">返回 402</div></div>
     <div class="arrow">→</div>
-    <div class="node proof">
-      <div class="icon">$</div><div class="lbl">Payments</div><div class="sub">CDP 签名</div>
-    </div>
+    <div class="step payment"><div class="step-num">04</div><div class="step-label">Payments</div><div class="step-sub">CDP 签名</div></div>
   </div>
-  <div class="pipeline" style="margin-top: 12px;">
-    <div class="node success">
-      <div class="icon">P</div><div class="lbl">Proof</div><div class="sub">PROOF_GENERATED</div>
-    </div>
+  <div class="pipeline" style="margin-top: 16px;">
+    <div class="step success"><div class="step-num">05</div><div class="step-label">Proof</div><div class="step-sub">PROOF_GEN</div></div>
     <div class="arrow">→</div>
-    <div class="node">
-      <div class="icon">A</div><div class="lbl">Agent retry</div><div class="sub">+ X-PAYMENT</div>
-    </div>
+    <div class="step"><div class="step-num">06</div><div class="step-label">Agent retry</div><div class="step-sub">+ X-PAYMENT</div></div>
     <div class="arrow">→</div>
-    <div class="node payment">
-      <div class="icon">L@E</div><div class="lbl">Lambda@Edge</div><div class="sub">verify + settle</div>
-    </div>
+    <div class="step payment"><div class="step-num">07</div><div class="step-label">Lambda@Edge</div><div class="step-sub">verify+settle</div></div>
     <div class="arrow">→</div>
-    <div class="node success">
-      <div class="icon">TX</div><div class="lbl">Base Sepolia</div><div class="sub">tx settled</div>
-    </div>
+    <div class="step success"><div class="step-num">08</div><div class="step-label">Base Sepolia</div><div class="step-sub">tx settled</div></div>
   </div>
-  <div class="cols-4" style="gap: 8px; margin-top: 22px;">
-    <div class="card" style="text-align: center; padding: 8px;"><div class="title" style="justify-content: center;">~1.5s</div><div class="body" style="text-align: center;">LLM 推理</div></div>
-    <div class="card" style="text-align: center; padding: 8px;"><div class="title" style="justify-content: center;">~0.5s</div><div class="body" style="text-align: center;">CDP 签名</div></div>
-    <div class="card" style="text-align: center; padding: 8px;"><div class="title" style="justify-content: center;">~1.0s</div><div class="body" style="text-align: center;">链上结算</div></div>
-    <div class="card" style="text-align: center; padding: 8px; background: var(--accent-soft); border: none;"><div class="title" style="justify-content: center; color: var(--accent-dark);">总计 ~3s</div><div class="body" style="text-align: center; color: var(--accent-dark);">端到端</div></div>
+  <div class="grid-4" style="margin-top: 40px; gap: 14px;">
+    <div style="text-align: center; padding: 16px 12px; border: 1px solid var(--line); border-radius: 4px;">
+      <div class="big-stat" style="font-size: 1.4em;">~1.5s</div>
+      <div style="font-size: 0.5em; color: var(--ink-3); margin-top: 8px;">LLM 推理</div>
+    </div>
+    <div style="text-align: center; padding: 16px 12px; border: 1px solid var(--line); border-radius: 4px;">
+      <div class="big-stat" style="font-size: 1.4em;">~0.5s</div>
+      <div style="font-size: 0.5em; color: var(--ink-3); margin-top: 8px;">CDP 签名</div>
+    </div>
+    <div style="text-align: center; padding: 16px 12px; border: 1px solid var(--line); border-radius: 4px;">
+      <div class="big-stat" style="font-size: 1.4em;">~1.0s</div>
+      <div style="font-size: 0.5em; color: var(--ink-3); margin-top: 8px;">链上结算</div>
+    </div>
+    <div style="text-align: center; padding: 16px 12px; background: var(--ink); color: white; border-radius: 4px;">
+      <div class="big-stat" style="font-size: 1.4em; color: white;">~3s</div>
+      <div style="font-size: 0.5em; color: rgba(255,255,255,0.7); margin-top: 8px;">总计</div>
+    </div>
   </div>
 </section>
 
-<!-- SLIDE 19: Where the 4 things happen -->
-<section data-background-color="#fafbfc">
-  <h2>四件关键的事，落在哪一步？</h2>
-  <p class="small">回头对照 Part 01 列出的"四个轮子" — 这套架构把它们分散落在 11 步上。</p>
-  <table class="comp" style="margin-top: 12px;">
+<!-- =================================================================== -->
+<!-- Slide 19 — 4 wheels mapped to steps -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">19 / 33 · <span class="accent">MAPPING</span></span>
+  <span class="kicker">Where the four wheels actually land</span>
+  <h2>四件关键的事，落在哪一步</h2>
+  <p style="color: var(--ink-3); margin-bottom: 28px; font-size: 0.7em;">
+    回头对照 Part 01 列出的"四个轮子"——这套架构把它们分散落在 11 步上。
+  </p>
+  <table class="refined">
     <thead>
-      <tr><th>四个轮子</th><th>落在哪步</th><th>怎么强制</th></tr>
+      <tr>
+        <th>四个轮子</th>
+        <th>落在哪步</th>
+        <th>怎么强制</th>
+      </tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>权限最小化</strong></td>
-        <td>Step 2 + Step 5</td>
+        <td><span class="pill muted">Step 02 + 06</span></td>
         <td>Agent 只持 3 个 ID + ProcessPaymentRole · 没有创建 Session 的权限</td>
       </tr>
       <tr>
         <td><strong>预算硬约束</strong></td>
-        <td>Step 6（Session 校验）</td>
+        <td><span class="pill muted">Step 04</span></td>
         <td>maxSpendAmount 在<strong>服务端</strong>校验 · prompt injection 绕不过</td>
       </tr>
       <tr>
         <td><strong>钱包托管</strong></td>
-        <td>Step 7 + Step 8</td>
-        <td>RetrievalRole assume → 取 CDP 凭证 → CDP 用 walletSecret 代签 · 私钥永远在 CDP</td>
+        <td><span class="pill muted">Step 04</span></td>
+        <td>RetrievalRole assume → 取 CDP 凭证 → CDP 用 walletSecret 代签</td>
       </tr>
       <tr>
         <td><strong>审计证据</strong></td>
-        <td>Step 8 + Step 11</td>
-        <td>Payments Audit Log（代理身份 + 钱包 + 签名）+ 链上 tx hash 双轨</td>
+        <td><span class="pill muted">Step 04 + 08</span></td>
+        <td>Payments Audit Log + 链上 tx hash · 双轨记录</td>
       </tr>
     </tbody>
   </table>
-  <div class="callout sky" style="margin-top: 14px;">
-    <p style="font-size: 0.78em;">
-      关键观察：这四件事<strong>不是集中在一个盒子里</strong>解决的。每件事在<strong>不同步骤</strong>由<strong>不同组件</strong>负责，
-      代理本身始终只面对 3 个 ID 和一个运行时角色。
-    </p>
+  <div class="quote" style="margin-top: 32px; font-size: 0.7em;">
+    这四件事<strong>不是集中在一个盒子里</strong>解决的——<br>
+    每件事在不同步骤、由不同组件负责，代理本身始终只面对 3 个 ID 和一个运行时角色。
   </div>
 </section>
 
-<!-- SLIDE 20: Real demo result -->
-<section data-background-color="#fafbfc">
-  <span class="stage-tag">Live Demo</span>
+<!-- =================================================================== -->
+<!-- Slide 20 — Demo result -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">20 / 33 · <span class="accent">LIVE</span></span>
+  <span class="kicker">Demo result</span>
   <h2>真实跑通的那一刻</h2>
-  <pre style="margin-top: 10px;"><code class="language-bash" data-trim data-noescape>
-$ python invoke_agent.py "Get me the premium article"
-
->> session: 90584474-d2ca-4dd1-a158-3c6618a27cbc
+  <div class="terminal" style="margin-top: 24px;">
+<span class="comment">$ python invoke_agent.py "Get me the premium article"</span>
+<span class="comment">>> session: 90584474-d2ca-4dd1-a158-3c6618a27cbc</span>
 
 {
-  "response": "Excellent! I've successfully retrieved the premium article.
+  <span class="string">"response"</span>: <span class="string">"Excellent! I've successfully retrieved the premium article.
    Payment: 0.001 USDC. Transaction:
-   <span style="color:#79c0ff">0x9a96e6de7402b2e35134391b1269778040429190d7e072506f1135f984daf87b</span>
-   Status: Successfully settled on-chain.",
-  "status": "success"
-}</code></pre>
-  <div class="cols" style="margin-top: 10px;">
-    <div class="result-box">
-      <h3 style="font-size: 0.78em; margin-bottom: 6px; color: var(--accent-dark);">链上余额变化</h3>
-      <div class="row"><span class="lbl">payer 0x9e94...</span><span class="val red">−0.001 USDC</span></div>
-      <div class="row"><span class="lbl">seller 0xF72b...</span><span class="val green">+0.001 USDC</span></div>
+   <span class="number">0x9a96e6de7402b2e35134391b1269778040429190d7e072506f1135f984daf87b</span>
+   Status: Successfully settled on-chain."</span>,
+  <span class="string">"status"</span>: <span class="ok">"success"</span>
+}
+  </div>
+  <div class="grid-2" style="margin-top: 24px;">
+    <div class="result">
+      <h3 style="margin: 0 0 12px; font-size: 0.7em;">链上余额变化</h3>
+      <div class="row"><span class="lbl">payer 0x9e94…</span><span class="val down">−0.001 USDC</span></div>
+      <div class="row"><span class="lbl">seller 0xF72b…</span><span class="val up">+0.001 USDC</span></div>
     </div>
-    <div class="result-box">
-      <h3 style="font-size: 0.78em; margin-bottom: 6px; color: var(--accent-dark);">链上 tx 详情</h3>
+    <div class="result">
+      <h3 style="margin: 0 0 12px; font-size: 0.7em;">链上 tx 详情</h3>
       <div class="row"><span class="lbl">block</span><span class="val">41404209</span></div>
-      <div class="row"><span class="lbl">status</span><span class="val green">SUCCESS ✓</span></div>
+      <div class="row"><span class="lbl">status</span><span class="val up">SUCCESS</span></div>
       <div class="row"><span class="lbl">network</span><span class="val">Base Sepolia</span></div>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 8px;">
-    sepolia.basescan.org/tx/0x9a96e6de7402b2e35134391b1269778040429190d7e072506f1135f984daf87b
-  </p>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 6: BUSINESS VALUE -->
+<!-- Slide 21 — SECTION 05 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 21: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 05</div>
-  <h1>对客户意味着什么</h1>
-  <p class="quote">从"代理能分析、能建议" 推进到 "代理能自主完成任务"</p>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">05</div>
+  <div class="label">PART FIVE</div>
+  <h1>对客户<br>意味着什么</h1>
+  <p class="desc">从"代理能分析、能建议"<br>推进到"代理能<strong>自主完成任务</strong>"。</p>
 </section>
 
-<!-- SLIDE 22: Before/after -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 22 — Before / after -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">22 / 33 · <span class="accent">VALUE</span></span>
+  <span class="kicker">Build vs. Buy</span>
   <h2>用 vs 不用 AgentCore Payments</h2>
-  <div class="before-after" style="margin-top: 14px;">
-    <div class="ba-box before">
-      <h3 style="color: var(--red);">不用 — 自己造</h3>
-      <ul>
+  <div class="grid-2" style="margin-top: 32px; gap: 32px;">
+    <div>
+      <h3 style="color: var(--ink-3); font-size: 0.55em; margin-bottom: 16px;">— 不用 / 自己造</h3>
+      <ul style="font-size: 0.7em; line-height: 1.7; padding-left: 18px;">
         <li>密钥托管：自建 KMS / HSM 流程</li>
         <li>预算控制：写 service mesh interceptor</li>
         <li>身份绑定：自定义 IAM 桥接</li>
         <li>审计日志：拼日志、对链上 tx</li>
-        <li><strong>3-6 个月 + 一支团队</strong></li>
         <li>每加一条新链都要重写</li>
       </ul>
+      <div style="margin-top: 24px; padding: 14px 18px; background: var(--bg-tint); border-radius: 4px;">
+        <span class="big-stat" style="font-size: 1.6em;">3-6 <span style="font-size: 0.6em;">months</span></span>
+        <p style="font-size: 0.55em; color: var(--ink-3); margin: 4px 0 0;">+ 一支团队</p>
+      </div>
     </div>
-    <div class="ba-arrow">→</div>
-    <div class="ba-box after">
-      <h3 style="color: var(--green);">用 — 接 API</h3>
-      <ul>
+    <div>
+      <h3 style="color: var(--accent); font-size: 0.55em; margin-bottom: 16px;">— 用 / 接 API</h3>
+      <ul style="font-size: 0.7em; line-height: 1.7; padding-left: 18px;">
         <li>密钥托管：服务端自动 + Secrets Manager</li>
         <li>预算控制：CreatePaymentSession 一行</li>
         <li>身份绑定：原生 IAM 集成</li>
         <li>审计日志：自动沉淀完整链路</li>
-        <li><strong>1-2 周接入</strong></li>
         <li>多链 / 多钱包通过 Connector 抽象</li>
       </ul>
+      <div style="margin-top: 24px; padding: 14px 18px; background: var(--accent); color: white; border-radius: 4px;">
+        <span class="big-stat" style="font-size: 1.6em; color: white;">1-2 <span style="font-size: 0.6em;">weeks</span></span>
+        <p style="font-size: 0.55em; color: rgba(255,255,255,0.85); margin: 4px 0 0;">即可接入并投产</p>
+      </div>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 14px;">
-    对客户而言：把"代理能投产付费"的工作量，从<strong>数月</strong>压缩到<strong>数天</strong>。
-  </p>
 </section>
 
-<!-- SLIDE 23: 4 demands answered -->
-<section data-background-color="#fafbfc">
-  <h2>回到最初的四项诉求 — 全部命中</h2>
-  <table class="comp" style="margin-top: 12px;">
+<!-- =================================================================== -->
+<!-- Slide 23 — Four demands answered -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">23 / 33 · <span class="accent">DEMANDS MET</span></span>
+  <span class="kicker">Four demands answered</span>
+  <h2>回到最初的四项诉求</h2>
+  <table class="refined" style="margin-top: 28px;">
     <thead>
-      <tr><th>诉求</th><th>这套方案怎么做</th></tr>
+      <tr>
+        <th>诉求</th>
+        <th>这套方案怎么做</th>
+      </tr>
     </thead>
     <tbody>
       <tr>
@@ -1028,387 +1338,374 @@ $ python invoke_agent.py "Get me the premium article"
       </tr>
       <tr>
         <td><strong>钱包可管，支出可控</strong></td>
-        <td>钱包由服务托管 · 私钥永远在 CDP/Privy · maxSpendAmount 服务端硬强制 · 代理改不了上限</td>
+        <td>钱包由服务托管 · 私钥永远在 CDP/Privy · maxSpendAmount 服务端硬强制</td>
       </tr>
       <tr>
         <td><strong>身份与影响面可控</strong></td>
-        <td>ManagementRole vs ProcessPaymentRole 职责分离 · 代理被攻破最大损失 = 当前 Session 上限</td>
+        <td>ManagementRole vs ProcessPaymentRole 职责分离 · 攻破最大损失 = 当前 Session 上限</td>
       </tr>
       <tr>
         <td><strong>决策可追溯</strong></td>
-        <td>支付决策 / 签名 / 链上 tx hash 自动入 Payments Audit Log + 链上证据 · 不用拼日志</td>
+        <td>支付决策 / 签名 / 链上 tx hash 自动入 Audit Log + 链上证据 · 不用拼日志</td>
       </tr>
     </tbody>
   </table>
-  <div class="callout amber" style="margin-top: 14px;">
-    <p style="font-size: 0.85em;">
-      <strong>商业意义</strong>：让你的 Agent 产品能<strong>真正完成</strong>"自主调用付费 API、自主购买内容、自主对接其他 Agent"——
-      而不是停在"卡在付款墙前等用户点 OK"。
-    </p>
+  <div class="quote" style="margin-top: 32px; font-size: 0.78em;">
+    商业意义：让你的 Agent 产品能<strong>真正完成</strong>"自主调用付费 API、自主购买内容、自主对接其他 Agent"——
+    而不是停在"卡在付款墙前等用户点 OK"。
   </div>
 </section>
 
-<!-- SLIDE 24: Use cases -->
-<section data-background-color="#fafbfc">
+<!-- =================================================================== -->
+<!-- Slide 24 — Customer use cases -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">24 / 33 · <span class="accent">USE CASES</span></span>
+  <span class="kicker">Where this fits</span>
   <h2>典型客户场景</h2>
-  <div class="cols-3" style="margin-top: 14px;">
-    <div class="card accent">
-      <div class="title">付费 API 消费</div>
-      <div class="body">
-        Agent 自主调用<strong>市场数据、地图、翻译、专家 LLM</strong>等付费 API，按调用计费，每次几美分。
-      </div>
+  <div class="grid-3" style="margin-top: 32px;">
+    <div class="card">
+      <span class="num">01</span>
+      <h3 class="title" style="margin-top: 0;">付费 API 消费</h3>
+      <p class="body">Agent 自主调用<strong>市场数据、地图、翻译、专家 LLM</strong>等付费 API，按调用计费。</p>
     </div>
-    <div class="card accent">
-      <div class="title">付费内容购买</div>
-      <div class="body">
-        Agent 替用户<strong>买报告、买数据集、买视频片段</strong>。卖方挂目录、收 USDC，代理按需购买。
-      </div>
+    <div class="card">
+      <span class="num">02</span>
+      <h3 class="title" style="margin-top: 0;">付费内容购买</h3>
+      <p class="body">Agent 替用户<strong>买报告、买数据集、买视频片段</strong>。卖方挂目录、收 USDC。</p>
     </div>
-    <div class="card accent">
-      <div class="title">Agent 之间结算</div>
-      <div class="body">
-        多 Agent 协作时，工作流上游的 Agent 调用下游 Agent 服务，按次<strong>实时付款</strong>。
-      </div>
+    <div class="card">
+      <span class="num">03</span>
+      <h3 class="title" style="margin-top: 0;">Agent 之间结算</h3>
+      <p class="body">多 Agent 协作时，工作流上游 Agent 调用下游 Agent 服务，按次<strong>实时付款</strong>。</p>
     </div>
-    <div class="card secondary">
-      <div class="title">SaaS Pay-per-use</div>
-      <div class="body">
-        把现有 SaaS 接口加一道 <code>x402</code>，让 Agent 用户<strong>无需注册</strong>就能消费。
-      </div>
+    <div class="card">
+      <span class="num">04</span>
+      <h3 class="title" style="margin-top: 0;">SaaS Pay-per-use</h3>
+      <p class="body">把现有 SaaS 接口加一道 <code>x402</code>，让 Agent 用户<strong>无需注册</strong>就能消费。</p>
     </div>
-    <div class="card secondary">
-      <div class="title">RAG 数据采购</div>
-      <div class="body">
-        Agent 在执行 RAG 时按<strong>段落</strong>付钱给内容提供者，解决传统订阅与按段计费冲突。
-      </div>
+    <div class="card">
+      <span class="num">05</span>
+      <h3 class="title" style="margin-top: 0;">RAG 数据采购</h3>
+      <p class="body">Agent 在执行 RAG 时按<strong>段落</strong>付钱给内容方，解决传统订阅与按段计费冲突。</p>
     </div>
-    <div class="card secondary">
-      <div class="title">受控自主采购</div>
-      <div class="body">
-        企业内 Agent 在<strong>预算 SLA</strong>内自主采购云服务、第三方工具，不需要每次走审批流。
-      </div>
+    <div class="card">
+      <span class="num">06</span>
+      <h3 class="title" style="margin-top: 0;">受控自主采购</h3>
+      <p class="body">企业内 Agent 在<strong>预算 SLA</strong>内自主采购云服务、第三方工具，不用每次走审批。</p>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 25: Extensibility -->
-<section data-background-color="#fafbfc">
-  <h2>扩展性：换链 / 换协议</h2>
-  <div class="cols" style="margin-top: 12px;">
+<!-- =================================================================== -->
+<!-- Slide 25 — Extensibility -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">25 / 33 · <span class="accent">EXTENSIBILITY</span></span>
+  <span class="kicker">Multi-chain · Multi-protocol</span>
+  <h2>扩展性 — 换链 / 换协议</h2>
+  <div class="grid-2" style="margin-top: 32px;">
     <div>
-      <h3 style="font-size: 0.95em;">链 — CAIP-2 链无关命名</h3>
-      <table class="comp" style="font-size: 0.55em;">
-        <thead><tr><th>链</th><th>CAIP-2</th></tr></thead>
+      <h3 style="font-size: 0.85em; margin-bottom: 16px;">链 — CAIP-2 链无关命名</h3>
+      <table class="refined" style="font-size: 0.55em;">
+        <thead>
+          <tr><th>链</th><th>CAIP-2</th></tr>
+        </thead>
         <tbody>
-          <tr><td>Base Sepolia (demo)</td><td>eip155:84532</td></tr>
-          <tr><td>Base 主网</td><td>eip155:8453</td></tr>
-          <tr><td>Ethereum</td><td>eip155:1</td></tr>
-          <tr><td>Arbitrum / Optimism / Polygon</td><td>eip155:*</td></tr>
+          <tr><td>Base Sepolia (demo)</td><td><code>eip155:84532</code></td></tr>
+          <tr><td>Base 主网</td><td><code>eip155:8453</code></td></tr>
+          <tr><td>Ethereum / Arbitrum / Optimism</td><td><code>eip155:*</code></td></tr>
           <tr><td>Solana / Cosmos / Bitcoin</td><td>(其它命名空间)</td></tr>
         </tbody>
       </table>
-      <p class="small" style="margin-top: 8px;">
-        当前 demo 钉死 Base Sepolia 的三处硬编码可改为多链配置。<strong>真正约束</strong>：facilitator 可用性 + EIP-3009 支持度。
+      <p style="font-size: 0.6em; color: var(--ink-3); margin-top: 16px; line-height: 1.55;">
+        约束：facilitator 可用性 + EIP-3009 支持度。AgentCore Payments Preview 阶段会逐步扩充。
       </p>
     </div>
     <div>
-      <h3 style="font-size: 0.95em;">协议 — x402 是第一个，不是唯一</h3>
-      <ul style="font-size: 0.7em;">
-        <li>MCP 目录里加 <code>payment.protocol</code> 字段</li>
+      <h3 style="font-size: 0.85em; margin-bottom: 16px;">协议 — x402 是第一个，不是唯一</h3>
+      <ul style="font-size: 0.65em; line-height: 1.7; padding-left: 18px;">
+        <li>MCP 目录加 <code>payment.protocol</code> 字段</li>
         <li>代理侧按字段分发到对应 handler</li>
-        <li>每种协议（x402 / Stripe / SEPA / L402）单独一个 handler 模块</li>
+        <li>每种协议独立 handler 模块（x402 / Stripe / SEPA / L402）</li>
       </ul>
-      <p class="small" style="margin-top: 12px;">
-        卖方按内容类型选协议（高频 API 走 x402、订阅走 Stripe、跨境走 SEPA），<br>
-        <strong>代理业务代码不需要重写</strong>。
+      <p style="font-size: 0.65em; color: var(--ink-3); margin-top: 24px; line-height: 1.6;">
+        卖方按内容类型选协议（高频 API 走 x402、订阅走 Stripe、跨境走 SEPA）——<strong>代理业务代码不需要重写</strong>。
       </p>
     </div>
   </div>
-  <div class="callout sky" style="margin-top: 14px;">
-    <p style="font-size: 0.78em;">
-      对象模型让"用哪条链"靠配置切换，协议抽象让"用哪个支付协议"按需扩展——
-      <strong>代理业务代码不用反复重写</strong>。
-    </p>
+  <div class="quote" style="margin-top: 32px; font-size: 0.7em;">
+    对象模型让"用哪条链"靠配置切换 · 协议抽象让"用哪个支付协议"按需扩展。
   </div>
 </section>
 
 <!-- =================================================================== -->
-<!-- ACT 7: ACTION -->
+<!-- Slide 26 — SECTION 06 -->
 <!-- =================================================================== -->
-
-<!-- SLIDE 26: Section divider -->
-<section class="section-divider" data-background-color="#0f172a">
-  <div class="num">// PART 06</div>
+<section class="section" data-background-color="#0a0a0a">
+  <div class="big-num">06</div>
+  <div class="label">PART SIX</div>
   <h1>怎么开始</h1>
-  <p class="quote">从克隆参考实现到端到端跑通 ≈ 1-2 小时</p>
+  <p class="desc">从准备到端到端跑通 ≈ <strong>1-2 小时</strong>。</p>
 </section>
 
-<!-- SLIDE 27: 7-step deploy -->
-<section data-background-color="#fafbfc">
-  <h2>部署流程（7 步）</h2>
-  <div style="margin-top: 6px;">
-    <div class="timeline-item">
-      <div class="num">1</div>
-      <div class="text"><strong>CDP 配置</strong>拿 API key + walletSecret · 启 Delegated Signing · 配 CORS origin</div>
+<!-- =================================================================== -->
+<!-- Slide 27 — 7-step deploy -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">27 / 33 · <span class="accent">DEPLOY</span></span>
+  <span class="kicker">Seven steps</span>
+  <h2>部署流程</h2>
+  <div class="tree" style="margin-top: 28px;">
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">1</div>
+      <div class="label">CDP 配置
+        <div class="desc">拿 API key + walletSecret · 启 Delegated Signing · 配 CORS origin</div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">2</div>
-      <div class="text"><strong>克隆代码</strong>设环境变量 <code>CDP_API_KEY_ID</code> / <code>CDP_API_KEY_SECRET</code> / <code>CDP_WALLET_SECRET</code></div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">2</div>
+      <div class="label">克隆代码
+        <div class="desc">设环境变量 <code>CDP_API_KEY_ID</code> / <code>CDP_API_KEY_SECRET</code> / <code>CDP_WALLET_SECRET</code></div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">3</div>
-      <div class="text"><strong>Seller CDK <span class="pill sky">us-east-1</span></strong>CloudFront + Lambda@Edge（Lambda@Edge 强制 us-east-1）</div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">3</div>
+      <div class="label">Seller CDK <span class="pill muted">us-east-1</span>
+        <div class="desc">CloudFront + Lambda@Edge（Lambda@Edge 强制 us-east-1）</div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">4</div>
-      <div class="text"><strong>Payer CDK + 补 IAM <span class="pill sky">us-west-2</span></strong>补 CDK 漏掉的 <code>CreateWorkloadIdentity</code>、<code>token-vault/*</code> 权限</div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">4</div>
+      <div class="label">Payer CDK + 补 IAM <span class="pill muted">us-west-2</span>
+        <div class="desc">补 CDK 漏掉的 <code>CreateWorkloadIdentity</code>、<code>token-vault/*</code> 权限</div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">5</div>
-      <div class="text"><strong>建 Payments 资源</strong>建 CDP end user → provider → manager → connector → instrument → session → WalletHub 授权 → faucet</div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">5</div>
+      <div class="label">建 Payments 资源
+        <div class="desc">建 CDP end user → provider → manager → connector → instrument → session → WalletHub 授权 → faucet</div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">6</div>
-      <div class="text"><strong>部署 Agent</strong>docker buildx <code>--platform linux/arm64</code> · 部到 AgentCore Runtime</div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">6</div>
+      <div class="label">部署 Agent
+        <div class="desc">docker buildx <code>--platform linux/arm64</code> · 部到 AgentCore Runtime</div>
+      </div>
     </div>
-    <div class="timeline-item">
-      <div class="num">7</div>
-      <div class="text"><strong>端到端测试</strong>看 payer / seller 链上余额变化 + tx hash</div>
+    <div class="tree-row" style="grid-template-columns: 32px 1fr;">
+      <div class="idx">7</div>
+      <div class="label">端到端测试
+        <div class="desc">看 payer / seller 链上余额变化 + tx hash</div>
+      </div>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 14px;">
-    首次部署 1-2 小时（CloudFront 分发 ~10 分钟 + arm64 build ~10 分钟）
+</section>
+
+<!-- =================================================================== -->
+<!-- Slide 28 — Pitfalls -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">28 / 33 · <span class="accent">CHEATSHEET</span></span>
+  <span class="kicker">14 real pitfalls</span>
+  <h2>真实踩坑速查</h2>
+  <p style="color: var(--ink-3); margin-bottom: 24px; font-size: 0.7em;">
+    所有坑都在仓库的 <code>DEPLOY.md §10</code> 里有详细修法。
   </p>
-</section>
-
-<!-- SLIDE 28: Pitfalls cheatsheet -->
-<section data-background-color="#fafbfc">
-  <h2>14 个真实踩坑（DEPLOY.md §10）</h2>
-  <p class="small">所有坑都在 fork 仓库的 <code>DEPLOY.md</code> 里有详细修法。</p>
-  <div class="cols-3" style="margin-top: 8px;">
-    <div class="card secondary">
-      <div class="title">SDK / Python</div>
-      <div class="body">
-        <p>boto3 没有 <code>create_payment_*</code><br>→ 升 ≥ 1.43，需要 Python ≥ 3.10</p>
-      </div>
-    </div>
-    <div class="card secondary">
-      <div class="title">CDK / 部署</div>
-      <div class="body">
-        <p>Stack 跑到错的 region<br>→ 显式传 <code>AWS_REGION=us-west-2</code></p>
-        <p style="margin-top: 4px;"><code>create_payment_manager</code> AccessDenied<br>→ 跑 <code>01_patch_iam_role.sh</code></p>
-      </div>
-    </div>
-    <div class="card accent">
-      <div class="title">API Schema</div>
-      <div class="body">
-        <p>QUICKSTART 字段过时<br>→ <code>EMBEDDED_CRYPTO_WALLET</code> / <code>linkedAccounts</code> / <code>expiryTimeInMinutes</code></p>
-      </div>
-    </div>
-    <div class="card accent">
-      <div class="title">CDP 配置</div>
-      <div class="body">
-        <p><code>create_instrument</code> 500<br>→ 启用 Delegated Signing + 真实 end user 邮箱</p>
-        <p style="margin-top: 4px;">"No accounts found"<br>→ 用 Email OTP 而非 Google OAuth</p>
-      </div>
-    </div>
-    <div class="card success">
-      <div class="title">Runtime / Bedrock</div>
-      <div class="body">
-        <p>Architecture incompatible<br>→ <code>--platform linux/arm64</code></p>
-        <p style="margin-top: 4px;">Invocation 422<br>→ <code>/invocations</code> 改读 raw body</p>
-        <p style="margin-top: 4px;">on-demand throughput 不支持<br>→ 用 <code>us.anthropic.claude-...</code></p>
-      </div>
-    </div>
-    <div class="card danger">
-      <div class="title">端到端 / 钱</div>
-      <div class="body">
-        <p>retry 时 403 Forbidden<br>→ retry 改用 GET（CloudFront 不允许 POST）</p>
-        <p style="margin-top: 4px;">Faucet 钱"消失"<br>→ 钱要打到 payer 钱包，不是 seller</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SLIDE 29: Pre-deployment checklist -->
-<section data-background-color="#fafbfc">
-  <h2>部署前的准备清单</h2>
-  <div class="cols-3" style="margin-top: 14px;">
-    <div class="card secondary">
-      <div class="title">AWS 账号</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>Bedrock AgentCore 区域权限</li>
-          <li>AgentCore Payments Preview 白名单</li>
-          <li>Bedrock Claude Sonnet 4 模型权限</li>
-          <li>boto3 ≥ 1.43</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card accent">
-      <div class="title">钱包与链上</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>Coinbase CDP 账户 + API Key</li>
-          <li>(或 Stripe Privy 应用凭证)</li>
-          <li>测试网 USDC 余额（Circle faucet）</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card amber">
-      <div class="title">合规与法务</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>稳定币使用合规确认</li>
-          <li>AI 自主支出风控策略</li>
-          <li>跨境资金流动税务/外汇评估</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card success">
-      <div class="title">组织角色</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>财务/业务方：定义预算策略</li>
-          <li>运维/安全：持有 ManagementRole</li>
-          <li>合规/审计：审计日志保留策略</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card secondary">
-      <div class="title">技术能力</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>AWS CDK</li>
-          <li>MCP 协议 + AgentCore Gateway</li>
-          <li>x402 + EIP-3009 基础</li>
-        </ul>
-      </div>
+  <div class="grid-3" style="gap: 16px;">
+    <div class="card">
+      <h3 class="title" style="margin: 0 0 8px;">SDK / Python</h3>
+      <p class="body">boto3 没有 <code>create_payment_*</code><br>→ 升 ≥ 1.43，需要 Python ≥ 3.10</p>
     </div>
     <div class="card">
-      <div class="title" style="color: var(--muted);">成本量级</div>
-      <div class="body">
-        <ul style="padding-left: 14px; margin: 0;">
-          <li>每天几千次：数美元/天</li>
-          <li>主要：Claude token + L@E 调用</li>
-          <li>链上：USDC + Base gas（亚美分）</li>
-        </ul>
-      </div>
+      <h3 class="title" style="margin: 0 0 8px;">CDK / 部署</h3>
+      <p class="body">Stack 跑到错的 region<br>→ 显式传 <code>AWS_REGION=us-west-2</code><br><br><code>create_payment_manager</code> AccessDenied<br>→ 跑 <code>01_patch_iam_role.sh</code></p>
+    </div>
+    <div class="card">
+      <h3 class="title" style="margin: 0 0 8px;">API Schema</h3>
+      <p class="body">QUICKSTART 字段过时<br>→ <code>EMBEDDED_CRYPTO_WALLET</code> /<br><code>linkedAccounts</code> /<br><code>expiryTimeInMinutes</code></p>
+    </div>
+    <div class="card">
+      <h3 class="title" style="margin: 0 0 8px;">CDP 配置</h3>
+      <p class="body"><code>create_instrument</code> 500<br>→ 启用 Delegated Signing + 真实 end user 邮箱<br><br>"No accounts found"<br>→ Email OTP 而非 OAuth</p>
+    </div>
+    <div class="card">
+      <h3 class="title" style="margin: 0 0 8px;">Runtime / Bedrock</h3>
+      <p class="body">Architecture incompatible<br>→ <code>--platform linux/arm64</code><br><br>Invocation 422<br>→ <code>/invocations</code> 改读 raw body</p>
+    </div>
+    <div class="card">
+      <h3 class="title" style="margin: 0 0 8px;">端到端 / 钱</h3>
+      <p class="body">retry 时 403 Forbidden<br>→ retry 改用 GET（CloudFront 不允许 POST）<br><br>Faucet 钱"消失"<br>→ 钱要打到 payer 钱包</p>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 30: What this system DOES NOT solve -->
-<section data-background-color="#fafbfc">
-  <h2>诚实地说：这套系统<strong>不</strong>解决什么</h2>
-  <div class="cols" style="margin-top: 12px;">
-    <div>
-      <h3 style="color: var(--green); font-size: 0.95em;">✓ 协议解决了</h3>
-      <div class="card success" style="margin-bottom: 5px;">
-        <div class="title">重复扣款</div>
-        <div class="body">EIP-3009 nonce 防重放</div>
-      </div>
-      <div class="card success" style="margin-bottom: 5px;">
-        <div class="title">超额支出</div>
-        <div class="body">Session 预算硬限制</div>
-      </div>
-      <div class="card success" style="margin-bottom: 5px;">
-        <div class="title">密钥泄漏</div>
-        <div class="body">Secrets Manager + Delegated Signing</div>
-      </div>
-      <div class="card success">
-        <div class="title">审计追溯</div>
-        <div class="body">链上 + IAM 双轨</div>
-      </div>
+<!-- =================================================================== -->
+<!-- Slide 29 — Pre-deployment checklist -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">29 / 33 · <span class="accent">CHECKLIST</span></span>
+  <span class="kicker">Before you start</span>
+  <h2>部署前的准备清单</h2>
+  <div class="grid-3" style="margin-top: 28px; gap: 16px;">
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">AWS 账号</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>Bedrock AgentCore 区域权限</li>
+        <li>AgentCore Payments Preview 白名单</li>
+        <li>Bedrock Claude Sonnet 4 模型权限</li>
+        <li>boto3 ≥ 1.43</li>
+      </ul>
     </div>
-    <div>
-      <h3 style="color: var(--red); font-size: 0.95em;">✗ 协议<em>不</em>解决</h3>
-      <div class="card danger" style="margin-bottom: 5px;">
-        <div class="title">退款 / 争议</div>
-        <div class="body">链上不可逆 · 没有 RefundAPI · seller 应用层处理</div>
-      </div>
-      <div class="card danger" style="margin-bottom: 5px;">
-        <div class="title">内容质量</div>
-        <div class="body">付了不一定满意，需要应用层评分系统</div>
-      </div>
-      <div class="card danger" style="margin-bottom: 5px;">
-        <div class="title">定价发现</div>
-        <div class="body">402 是 take-it-or-leave-it</div>
-      </div>
-      <div class="card danger">
-        <div class="title">合规 KYC/AML</div>
-        <div class="body">主网各地法规不同，需自评估</div>
-      </div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">钱包与链上</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>Coinbase CDP 账户 + API Key</li>
+        <li>(或 Stripe Privy 应用凭证)</li>
+        <li>测试网 USDC（Circle faucet）</li>
+      </ul>
+    </div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">合规与法务</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>稳定币使用合规确认</li>
+        <li>AI 自主支出风控策略</li>
+        <li>跨境资金流动税务/外汇</li>
+      </ul>
+    </div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">组织角色</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>财务/业务方：定义预算策略</li>
+        <li>运维/安全：持有 ManagementRole</li>
+        <li>合规/审计：审计日志保留</li>
+      </ul>
+    </div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">技术能力</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>AWS CDK</li>
+        <li>MCP 协议 + AgentCore Gateway</li>
+        <li>x402 + EIP-3009 基础</li>
+      </ul>
+    </div>
+    <div class="card flat">
+      <h3 class="title" style="margin: 0 0 8px;">成本量级</h3>
+      <ul style="padding-left: 16px; margin: 0; font-size: 0.62em; color: var(--ink-3); line-height: 1.6;">
+        <li>每天几千次：数美元/天</li>
+        <li>主要：Claude token + L@E 调用</li>
+        <li>链上：USDC + Base gas（亚美分）</li>
+      </ul>
     </div>
   </div>
-  <p class="small muted center" style="margin-top: 12px;">
-    设计哲学：<strong>"链上即终局"</strong> · 退款由 seller 应用层主动发反向 transfer 或上 escrow 合约
+</section>
+
+<!-- =================================================================== -->
+<!-- Slide 30 — What's NOT solved -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">30 / 33 · <span class="accent">HONEST</span></span>
+  <span class="kicker">Honestly</span>
+  <h2>这套系统<strong>不</strong>解决的问题</h2>
+  <div class="grid-2" style="margin-top: 28px;">
+    <div>
+      <h3 style="color: #047857; font-size: 0.6em; letter-spacing: 0.05em; margin-bottom: 14px;">— 协议解决了</h3>
+      <table class="refined" style="font-size: 0.6em;">
+        <tr><td><strong>重复扣款</strong></td><td>EIP-3009 nonce 防重放</td></tr>
+        <tr><td><strong>超额支出</strong></td><td>Session 预算硬限制</td></tr>
+        <tr><td><strong>密钥泄漏</strong></td><td>Secrets Manager + Delegated Signing</td></tr>
+        <tr><td><strong>审计追溯</strong></td><td>链上 + IAM 双轨</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="color: #d92f2f; font-size: 0.6em; letter-spacing: 0.05em; margin-bottom: 14px;">— 协议<em>不</em>解决</h3>
+      <table class="refined" style="font-size: 0.6em;">
+        <tr><td><strong>退款 / 争议</strong></td><td>链上不可逆 · 应用层处理</td></tr>
+        <tr><td><strong>内容质量</strong></td><td>付了不一定满意 · 评分系统</td></tr>
+        <tr><td><strong>定价发现</strong></td><td>402 是 take-it-or-leave-it</td></tr>
+        <tr><td><strong>合规 KYC/AML</strong></td><td>主网各地法规不同</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="quote" style="margin-top: 32px; font-size: 0.7em;">
+    设计哲学："链上即终局" · 退款由 seller 应用层主动发反向 transfer，或上 escrow 合约。
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- Slide 31 — Big picture -->
+<!-- =================================================================== -->
+<section class="story" data-background-color="#ffffff">
+  <span class="watermark">31 / 33 · <span class="accent">VISION</span></span>
+  <p style="font-size: 0.78em; color: var(--ink-3); margin-bottom: 22px; max-width: 720px; line-height: 1.5;">
+    过去 20 年，互联网上所有收费都绑在<strong style="color: var(--ink);">账户</strong>上。
+  </p>
+  <div class="lede" style="font-size: 1.3em; max-width: 960px;">
+    x402 + AgentCore Payments 把支付变成<br>
+    一次 HTTP 请求级别的 <span class="underline-accent">原语</span>。
+  </div>
+  <p class="footnote" style="margin-top: 28px; font-size: 0.65em;">
+    内容方只需一个链上地址 · Agent 带个支付 header 即可 · 微支付经济上可行<br>
+    这不是替换现有支付体系——是为<span style="color: var(--accent); font-weight: 700;">机器对机器的经济</span>打地基。
   </p>
 </section>
 
-<!-- SLIDE 31: The big picture -->
-<section class="story" data-background-color="#fafbfc">
-  <div class="hook" style="font-size: 1.1em; margin-bottom: 18px;">
-    过去 20 年，互联网上所有收费都绑在<strong>账户</strong>上。
-  </div>
-  <div class="callout center" style="background: linear-gradient(135deg, #fff8f3 0%, var(--accent-soft) 100%); margin: 0 0 18px 0; padding: 22px; max-width: 820px;">
-    <p style="font-size: 1.15em; color: var(--fg); margin: 0; font-weight: 700; line-height: 1.4;">
-      x402 + AgentCore Payments 把支付变成<br>
-      一次 HTTP 请求级别的<span class="hl">原语</span>
-    </p>
-  </div>
-  <div class="reveal-text" style="font-size: 0.78em;">
-    内容方只需一个链上地址 · Agent 带个支付 header 即可 · 微支付经济上可行<br><br>
-    <strong>这不是替换现有支付体系</strong>——是为<strong style="color: var(--accent);">机器对机器的经济</strong>打地基。
-  </div>
-</section>
-
-<!-- SLIDE 32: Resources -->
-<section data-background-color="#fafbfc">
-  <h2>立刻开始 — 三个动作</h2>
-  <div style="margin-top: 12px;">
-    <a class="asset-link" href="https://github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments" target="_blank">
-      <div class="marker">1</div>
+<!-- =================================================================== -->
+<!-- Slide 32 — Resources -->
+<!-- =================================================================== -->
+<section data-background-color="#ffffff">
+  <span class="watermark">32 / 33 · <span class="accent">START NOW</span></span>
+  <span class="kicker">Three actions</span>
+  <h2>立刻开始</h2>
+  <div style="margin-top: 32px;">
+    <div class="resource">
+      <div class="idx">01</div>
       <div class="text">
-        <div class="name">克隆参考实现并跑通</div>
-        <div class="desc">github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments — 包含 4 个真 bug 修复 + 完整文档 + 5 个 runbook 脚本 · 跟着 DEPLOY.md 1-2 小时跑通端到端</div>
+        <div class="name">克隆参考实现并跑通端到端</div>
+        <div class="desc"><code>aws-samples / sample-agentcore-cloudfront-x402-payments</code> · 跟 <code>DEPLOY.md</code> 1-2 小时跑通端到端</div>
       </div>
-    </a>
-    <a class="asset-link" href="https://aws.amazon.com/bedrock/agentcore/" target="_blank">
-      <div class="marker">2</div>
+    </div>
+    <div class="resource">
+      <div class="idx">02</div>
       <div class="text">
         <div class="name">申请 AgentCore Payments Preview 访问权</div>
-        <div class="desc">联系你所在账号的 AWS 客户经理，或通过官方文档提交白名单申请</div>
+        <div class="desc">联系所在账号的 AWS 客户经理，或通过官方文档提交白名单申请</div>
       </div>
-    </a>
-    <a class="asset-link" href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/payments-concepts.html" target="_blank">
-      <div class="marker">3</div>
+    </div>
+    <div class="resource">
+      <div class="idx">03</div>
       <div class="text">
         <div class="name">阅读 AgentCore Payments Concepts</div>
-        <div class="desc">理解 Credential Provider / Connector / Manager / Instrument / Session 五个对象的最直接入口</div>
+        <div class="desc"><code>docs.aws.amazon.com / bedrock-agentcore / payments-concepts.html</code> · 理解 5 个核心对象</div>
       </div>
-    </a>
+    </div>
   </div>
-  <p class="small muted center" style="margin-top: 18px;">
-    更多链 + 非加密通路（Stripe Privy） + 细粒度治理 + Agent 之间支付协作（A2A + x402）正在路上
+  <p style="text-align: center; margin-top: 36px; font-size: 0.6em; color: var(--ink-3); padding-top: 20px; border-top: 1px solid var(--line);">
+    更多链 · 非加密通路（Stripe Privy）· 细粒度治理 · Agent 之间支付协作（A2A + x402）正在路上
   </p>
 </section>
 
-<!-- SLIDE 33: Closing -->
-<section class="title-slide" data-background-color="#fafbfc">
-  <div class="logo-row">
-    <span class="lbl">END</span>
-    <span class="logo-dot"></span>
-    <span class="lbl">QUESTIONS</span>
+<!-- =================================================================== -->
+<!-- Slide 33 — Q&A -->
+<!-- =================================================================== -->
+<section class="cover" data-background-color="#ffffff">
+  <div class="top-meta">
+    <span>END</span>
+    <span class="dot"></span>
+    <span>QUESTIONS</span>
   </div>
-  <h1>Q &amp; A</h1>
-  <div class="sub">让 AI Agent 真正参与经济活动的<span class="accent">开始</span></div>
-  <div class="callout" style="background: white; max-width: 760px; margin-top: 20px;">
-    <p class="mono center" style="font-size: 0.78em; color: var(--soft);">
-      <span style="color: var(--muted);">$</span> git clone github.com/IanLiYi1996/sample-agentcore-cloudfront-x402-payments<br>
-      <span style="color: var(--muted);">$</span> open DEPLOY.md<br>
-      <span style="color: var(--accent);">→ 1-2 小时跑通端到端 → 付出第一笔 0.001 USDC</span>
-    </p>
+  <div class="main">
+    <div class="divider"></div>
+    <h1>Q &amp; A</h1>
+    <p class="sub">让 AI Agent 真正参与经济活动的<span style="color: var(--accent); font-weight: 600;">开始</span>。</p>
+  </div>
+  <div class="bottom-row">
+    <div style="font-family: var(--font-mono); font-size: 1.1em; color: var(--ink-3); letter-spacing: 0; text-transform: none;">
+      <div style="color: var(--ink-4);">$ git clone aws-samples/sample-agentcore-cloudfront-x402-payments</div>
+      <div style="color: var(--ink-4); margin-top: 4px;">$ open DEPLOY.md</div>
+      <div style="color: var(--accent); font-weight: 600; margin-top: 8px;">→ 1-2 小时跑通 → 付出第一笔 0.001 USDC</div>
+    </div>
+    <div>THANK YOU</div>
   </div>
 </section>
 
